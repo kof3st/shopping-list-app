@@ -7,27 +7,29 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColors(
-    primary = Purple80,
-    secondary = PurpleGrey80,
+    primary = Blue,
+    primaryVariant = Blue,
+    onPrimary = Color.White,
+
+    secondary = Blue,
+    secondaryVariant = Blue,
+    onSecondary = Color.White
 )
 
 private val LightColorScheme = lightColors(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = DarkBlue,
+    primaryVariant = Blue,
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+
+    secondary = Blue,
+    secondaryVariant = Blue,
+    onSecondary = Color.White
 )
 
 @Composable
