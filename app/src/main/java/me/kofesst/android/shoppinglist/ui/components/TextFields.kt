@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
@@ -21,6 +22,7 @@ fun ValidatedOutlinedTextField(
     trailingIcon: Painter? = null,
     onTrailingIconClick: () -> Unit = {},
     singleLine: Boolean = true,
+    textStyle: TextStyle = TextStyle.Default
 ) {
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -30,7 +32,12 @@ fun ValidatedOutlinedTextField(
             isError = errorMessage != null,
             label = { Text(text = label) },
             leadingIcon = if (leadingIcon != null) {
-                { Icon(painter = leadingIcon, contentDescription = null) }
+                {
+                    Icon(
+                        painter = leadingIcon,
+                        contentDescription = null
+                    )
+                }
             } else {
                 null
             },
@@ -47,6 +54,7 @@ fun ValidatedOutlinedTextField(
             } else {
                 null
             },
+            textStyle = textStyle,
             modifier = Modifier.fillMaxWidth()
         )
         TextFieldError(
@@ -59,7 +67,7 @@ fun ValidatedOutlinedTextField(
 @Composable
 fun TextFieldError(
     modifier: Modifier = Modifier,
-    message: String? = null,
+    message: String? = null
 ) {
     AnimatedVisibility(visible = message != null) {
         Text(

@@ -42,3 +42,9 @@ val longLengthError = UiText.Resource(R.string.error__long_length).apply {
         Constraints.ShoppingItem.NAME_LENGTH_RANGE.last
     )
 }
+
+val homeScreenTitle = UiText.Resource(R.string.home_screen_title)
+val shoppingListIdLabel = UiText.Resource(R.string.shopping_list_id_label)
+val searchShoppingListText = UiText.Resource(R.string.search_shopping_list)
+val otherActionText = UiText.Resource(R.string.other_action)
+val createNewListText = UiText.Resource(R.string.create_new_list)

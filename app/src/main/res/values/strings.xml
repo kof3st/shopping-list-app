@@ -5,4 +5,9 @@
     <string name="error__not_in_range">Нужно число от %d то %d!</string>
     <string name="error__long_length">Максимум %d симв.</string>
     <string name="error__small_length">Минимум %d симв.</string>
+    <string name="shopping_list_id_label">Введите номер списка покупок</string>
+    <string name="search_shopping_list">Открыть список покупок</string>
+    <string name="create_new_list">Создать новый список</string>
+    <string name="other_action">Или</string>
+    <string name="home_screen_title">Главная</string>
 </resources>
