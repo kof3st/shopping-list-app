@@ -5,6 +5,6 @@ import me.kofesst.android.shoppinglist.presentation.utils.UiText
 data class CreateEditItemState(
     val name: String = "",
     val nameError: UiText? = null,
-    val amountStr: String = "",
+    val amount: Int = 1,
     val amountError: UiText? = null
 )

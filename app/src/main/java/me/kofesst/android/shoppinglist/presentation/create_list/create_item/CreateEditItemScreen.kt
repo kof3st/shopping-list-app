@@ -17,7 +17,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.itemAmountLabel
 import me.kofesst.android.shoppinglist.presentation.utils.itemNameLabel
 import me.kofesst.android.shoppinglist.presentation.utils.submitItemText
 import me.kofesst.android.shoppinglist.ui.components.Buttons
-import me.kofesst.android.shoppinglist.ui.components.ValidatedOutlinedTextField
+import me.kofesst.android.shoppinglist.ui.components.TextFields
 
 @Composable
 fun CreateEditItemScreen(
@@ -87,7 +87,7 @@ private fun CreateEditForm(
         ),
         modifier = modifier
     ) {
-        ValidatedOutlinedTextField(
+        TextFields.OutlinedTextField(
             value = formState.name,
             onValueChange = {
                 onFormAction(
@@ -99,8 +99,8 @@ private fun CreateEditForm(
             label = itemNameLabel.asString(),
             modifier = Modifier.fillMaxWidth()
         )
-        ValidatedOutlinedTextField(
-            value = formState.amountStr,
+        TextFields.OutlinedNumericTextField(
+            value = formState.amount,
             onValueChange = {
                 onFormAction(
                     CreateEditItemAction.AmountChanged(it)

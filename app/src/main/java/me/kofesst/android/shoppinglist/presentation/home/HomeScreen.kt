@@ -3,7 +3,6 @@ package me.kofesst.android.shoppinglist.presentation.home
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.presentation.*
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
+import me.kofesst.android.shoppinglist.ui.components.TextFields
 
 @Preview(
     showBackground = true,
@@ -145,17 +145,11 @@ private fun SearchListBlock(
         verticalArrangement = Arrangement.spacedBy(14.dp),
         modifier = modifier
     ) {
-        OutlinedTextField(
+        TextFields.OutlinedTextField(
             value = listId,
             onValueChange = { listId = it },
-            label = {
-                Text(
-                    text = shoppingListIdLabel.asString(),
-                    style = MaterialTheme.typography.body2
-                )
-            },
+            label = shoppingListIdLabel.asString(),
             textStyle = MaterialTheme.typography.body1,
-            maxLines = 1,
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
