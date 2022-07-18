@@ -60,3 +60,10 @@ val createEditItemScreenTitle = UiText.Resource(R.string.create_edit_item_screen
 val submitItemText = UiText.Resource(R.string.submit_item)
 val itemNameLabel = UiText.Resource(R.string.item_name_label)
 val itemAmountLabel = UiText.Resource(R.string.item_amount_label)
+
+val listDetailsScreenTitle = UiText.Resource(R.string.list_details_screen_title)
+val nullListMessage = UiText.Resource(R.string.null_list_message)
+val confirmDialogTitle = UiText.Resource(R.string.confirm_dialog_title)
+val confirmDialogMessage = UiText.Resource(R.string.confirm_dialog_message)
+val confirmDialogDismissText = UiText.Resource(R.string.confirm_dialog_dismiss)
+val confirmDialogAcceptText = UiText.Resource(R.string.confirm_dialog_accept)

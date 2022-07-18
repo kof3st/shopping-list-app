@@ -1,19 +1,21 @@
 package me.kofesst.android.shoppinglist.presentation.list_details
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.SearchOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
+import me.kofesst.android.shoppinglist.presentation.AppState
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.utils.LoadingState
+import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
 @Composable
@@ -23,6 +25,8 @@ fun ListDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     val appState = LocalAppState.current
+    ListDetailsScreenSettings(appState)
+
     val navController = appState.navController
 
     LaunchedEffect(Unit) {
@@ -35,38 +39,17 @@ fun ListDetailsScreen(
     }
 
     Box(modifier = modifier) {
-        when (detailsState) {
-            is LoadingState.Failed -> {
-                ErrorPanel((detailsState as LoadingState.Failed<ShoppingList>).exception)
-            }
-            is LoadingState.Idle -> {
-                LoadingPanel(modifier = Modifier.align(Alignment.Center))
-            }
-            is LoadingState.Loading -> {
-                LoadingPanel(modifier = Modifier.align(Alignment.Center))
-            }
-            is LoadingState.Loaded -> {
-                val details = detailsState as LoadingState.Loaded
-                val list = details.value
-                if (list == null) {
-                    ErrorPanel(Exception("Null list"))
-                } else {
-                    ShoppingListColumn(
-                        list = details.value.items,
-                        modifier = modifier
-                    )
-                    FloatingActionButton(
-                        onClick = { confirmDialogState = true },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(20.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Check,
-                            contentDescription = null
-                        )
-                    }
-                }
+        ListDetails(detailsState = detailsState) {
+            FloatingActionButton(
+                onClick = { confirmDialogState = true },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(20.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Check,
+                    contentDescription = null
+                )
             }
         }
     }
@@ -87,6 +70,44 @@ fun ListDetailsScreen(
 }
 
 @Composable
+private fun ListDetailsScreenSettings(appState: AppState) {
+    appState.topBarState.title = listDetailsScreenTitle
+    appState.topBarState.visible = true
+    appState.topBarState.hasBackButton = true
+    appState.topBarState.actions = listOf()
+}
+
+@Composable
+private fun ListDetails(
+    detailsState: LoadingState<ShoppingList>,
+    checkButton: @Composable () -> Unit
+) {
+    when (detailsState) {
+        is LoadingState.Failed -> {
+            ErrorPanel()
+        }
+        is LoadingState.Idle -> {
+            LoadingPanel()
+        }
+        is LoadingState.Loading -> {
+            LoadingPanel()
+        }
+        is LoadingState.Loaded -> {
+            val list = detailsState.value
+            if (list == null) {
+                ErrorPanel()
+            } else {
+                ShoppingListColumn(
+                    list = list.items,
+                    modifier = Modifier.fillMaxSize()
+                )
+                checkButton()
+            }
+        }
+    }
+}
+
+@Composable
 private fun CompleteConfirmDialog(
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}
@@ -96,14 +117,14 @@ private fun CompleteConfirmDialog(
             onDismissRequest = onDismiss,
             title = {
                 Text(
-                    text = "Подтверждение действия",
-                    style = MaterialTheme.typography.subtitle1
+                    text = confirmDialogTitle.asString(),
+                    style = MaterialTheme.typography.h6
                 )
             },
             text = {
                 Text(
-                    text = "После выполнения списка покупок он больше не будет доступен. Продолжить?",
-                    style = MaterialTheme.typography.body2
+                    text = confirmDialogMessage.asString(),
+                    style = MaterialTheme.typography.body1
                 )
             },
             buttons = {
@@ -111,18 +132,16 @@ private fun CompleteConfirmDialog(
                     modifier = Modifier.padding(8.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    TextButton(
-                        modifier = Modifier.weight(1f),
+                    Buttons.TextButton(
+                        text = confirmDialogDismissText.asString(),
+                        modifier = Modifier.weight(1.0f),
                         onClick = onDismiss
-                    ) {
-                        Text("Отмена")
-                    }
-                    TextButton(
-                        modifier = Modifier.weight(1f),
+                    )
+                    Buttons.TextButton(
+                        text = confirmDialogAcceptText.asString(),
+                        modifier = Modifier.weight(1.0f),
                         onClick = onAccept
-                    ) {
-                        Text("Да")
-                    }
+                    )
                 }
             }
         )
@@ -130,15 +149,34 @@ private fun CompleteConfirmDialog(
 }
 
 @Composable
-private fun ErrorPanel(exception: Exception) {
-    Text(text = exception.toString())
+private fun ErrorPanel() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(
+            space = 10.dp,
+            alignment = Alignment.CenterVertically
+        ),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.SearchOff,
+            contentDescription = null,
+            modifier = Modifier.size(72.dp)
+        )
+        Text(
+            text = nullListMessage.asString(),
+            style = MaterialTheme.typography.h6,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
-private fun LoadingPanel(
-    modifier: Modifier = Modifier
-) {
-    CircularProgressIndicator(
-        modifier = modifier
-    )
+private fun LoadingPanel() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
 }

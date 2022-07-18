@@ -23,4 +23,10 @@
     <string name="item_name_label">Введите описание</string>
     <string name="item_amount_label">Введите количество штук</string>
     <string name="cannot_save_empty_list_message">Нельзя сохранить пустой список!</string>
+    <string name="null_list_message">Кажется, списка покупок с данным номером не существует…</string>
+    <string name="list_details_screen_title">Список покупок</string>
+    <string name="confirm_dialog_title">Подтверждение действия</string>
+    <string name="confirm_dialog_message">После выполнения списка покупок он больше не будет доступен. Продолжить?</string>
+    <string name="confirm_dialog_dismiss">Отмена</string>
+    <string name="confirm_dialog_accept">Продолжить</string>
 </resources>

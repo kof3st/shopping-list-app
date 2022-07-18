@@ -24,5 +24,23 @@ class Buttons private constructor() {
                 )
             }
         }
+
+        @Composable
+        fun TextButton(
+            text: String,
+            modifier: Modifier = Modifier,
+            onClick: () -> Unit = {}
+        ) {
+            androidx.compose.material.TextButton(
+                onClick = onClick,
+                modifier = modifier
+            ) {
+                Text(
+                    text = text.uppercase(),
+                    style = MaterialTheme.typography.button,
+                    color = MaterialTheme.colors.onPrimary
+                )
+            }
+        }
     }
 }
