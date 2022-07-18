@@ -1,21 +1,21 @@
 package me.kofesst.android.shoppinglist.presentation.create_list
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.Screen
-import me.kofesst.android.shoppinglist.presentation.withArgs
+import me.kofesst.android.shoppinglist.presentation.*
+import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
 @Composable
@@ -25,57 +25,109 @@ fun NewListScreen(
 ) {
     val appState = LocalAppState.current
     val navController = appState.navController
-
     val items = viewModel.items
     val clipboardManager = LocalClipboardManager.current
+    val copyMessage = listIdCopiedMessage.asString()
+    val cannotSaveEmptyMessage = cannotSaveEmptyListMessage.asString()
+
+    NewListScreenSettings(
+        appState = appState,
+        onSubmitClick = {
+            if (items.isEmpty()) {
+                appState.showSnackbar(
+                    message = cannotSaveEmptyMessage,
+                    duration = SnackbarDuration.Short
+                )
+            } else {
+                viewModel.saveList { listId ->
+                    clipboardManager.setText(
+                        AnnotatedString(text = listId)
+                    )
+                    appState.showSnackbar(
+                        message = copyMessage,
+                        duration = SnackbarDuration.Short
+                    )
+                    navController.navigateUp()
+                }
+            }
+        }
+    )
     Box(modifier = modifier) {
         ShoppingListColumn(
             list = items,
             onItemClick = {
                 navController.navigate(
                     Screen.CREATE_EDIT_ITEM.withArgs(
-                        "itemIndex" to it
+                        Screen.Constants.CreateEditItem.ITEM_INDEX_ARG to it
                     )
                 )
             },
             modifier = Modifier.fillMaxSize()
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(5.dp),
+        if (items.isEmpty()) {
+            EmptyListMessage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(40.dp)
+            )
+        }
+        FloatingActionButton(
+            onClick = {
+                navController.navigate(
+                    Screen.CREATE_EDIT_ITEM.withArgs()
+                )
+            },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(20.dp)
         ) {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(Screen.CREATE_EDIT_ITEM.withArgs())
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "Добавить продукты"
-                )
-            }
-            FloatingActionButton(
-                onClick = {
-                    viewModel.saveList { listId ->
-                        clipboardManager.setText(
-                            AnnotatedString(text = listId)
-                        )
-                        appState.showSnackbar(
-                            message = "Номер созданного списка покупок скопирован!",
-                            duration = SnackbarDuration.Long
-                        )
-                        navController.navigateUp()
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Send,
-                    contentDescription = "Сохранить"
-                )
-            }
+            Icon(
+                imageVector = Icons.Outlined.Add,
+                contentDescription = addItemText.asString()
+            )
         }
+    }
+}
+
+@Composable
+private fun NewListScreenSettings(
+    appState: AppState,
+    onSubmitClick: () -> Unit
+) {
+    appState.topBarState.visible = true
+    appState.topBarState.title = newListScreenTitle
+    appState.topBarState.hasBackButton = true
+    appState.topBarState.actions = listOf(
+        TopBarState.Action(
+            imageVector = Icons.Outlined.Save,
+            contentDescription = submitListText,
+            onClick = onSubmitClick
+        )
+    )
+}
+
+@Composable
+private fun EmptyListMessage(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(
+            space = 10.dp,
+            alignment = Alignment.CenterVertically
+        ),
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Folder,
+            contentDescription = null,
+            modifier = Modifier.size(72.dp)
+        )
+        Text(
+            text = emptyListMessage.asString(),
+            style = MaterialTheme.typography.h6,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }

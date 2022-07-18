@@ -22,7 +22,7 @@ fun ValidatedOutlinedTextField(
     trailingIcon: Painter? = null,
     onTrailingIconClick: () -> Unit = {},
     singleLine: Boolean = true,
-    textStyle: TextStyle = TextStyle.Default
+    textStyle: TextStyle = MaterialTheme.typography.body1
 ) {
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -30,7 +30,12 @@ fun ValidatedOutlinedTextField(
             onValueChange = { onValueChange(it) },
             readOnly = isReadOnly,
             isError = errorMessage != null,
-            label = { Text(text = label) },
+            label = {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.body2
+                )
+            },
             leadingIcon = if (leadingIcon != null) {
                 {
                     Icon(

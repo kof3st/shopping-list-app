@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,16 +25,22 @@ val LocalAppState = compositionLocalOf<AppState> {
 @Composable
 fun ShoppingListApp() {
     val appState = LocalAppState.current
+    val navController = appState.navController
     val topBarState = remember { appState.topBarState }
     val bottomBarState = remember { appState.bottomBarState }
 
     Scaffold(
         scaffoldState = appState.scaffoldState,
-        topBar = { TopBar(topBarState) },
+        topBar = {
+            TopBar(
+                state = topBarState,
+                navController = navController
+            )
+        },
         bottomBar = { BottomBar(bottomBarState) }
     ) {
         ScreensNavHost(
-            navController = appState.navController,
+            navController = navController,
             padding = it
         )
     }
@@ -62,7 +71,10 @@ private fun ScreensNavHost(
 }
 
 @Composable
-private fun TopBar(state: TopBarState) {
+private fun TopBar(
+    state: TopBarState,
+    navController: NavController
+) {
     AnimatedVisibility(
         visible = state.visible,
         enter = fadeIn() + slideInVertically(),
@@ -72,7 +84,7 @@ private fun TopBar(state: TopBarState) {
             title = {
                 Text(
                     text = state.title.asString(),
-                    style = MaterialTheme.typography.h5
+                    style = MaterialTheme.typography.h6
                 )
             },
             actions = {
@@ -84,6 +96,18 @@ private fun TopBar(state: TopBarState) {
                         )
                     }
                 }
+            },
+            navigationIcon = if (state.hasBackButton) {
+                {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
+            } else {
+                null
             },
             modifier = Modifier.fillMaxWidth()
         )

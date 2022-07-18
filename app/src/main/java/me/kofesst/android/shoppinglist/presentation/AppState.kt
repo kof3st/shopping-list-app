@@ -60,11 +60,13 @@ fun rememberAppState(
 class TopBarState(
     visible: Boolean = false,
     title: UiText = UiText.Static(""),
+    hasBackButton: Boolean = false,
     actions: List<Action> = listOf()
 ) {
     var visible by mutableStateOf(visible)
     var title by mutableStateOf(title)
-    val actions = mutableStateListOf(*actions.toTypedArray())
+    var hasBackButton by mutableStateOf(hasBackButton)
+    var actions by mutableStateOf(actions)
 
     class Action(
         val imageVector: ImageVector,

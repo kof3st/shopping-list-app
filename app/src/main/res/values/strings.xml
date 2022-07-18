@@ -10,4 +10,17 @@
     <string name="create_new_list">Создать новый список</string>
     <string name="other_action">Или</string>
     <string name="home_screen_title">Главная</string>
+    <string name="add_item">Добавить пункт</string>
+    <string name="submit_list">Сохранить</string>
+    <string name="new_list_screen_title">Новый список покупок</string>
+    <string name="empty_list_message">
+        Список покупок пуст!\n
+        Нажмите на +, чтобы добавить новый пункт
+    </string>
+    <string name="list_id_copied_message">Номер созданного списка покупок скопирован!</string>
+    <string name="submit_item">Сохранить</string>
+    <string name="create_edit_item_screen_title">Изменение пункта</string>
+    <string name="item_name_label">Введите описание</string>
+    <string name="item_amount_label">Введите количество штук</string>
+    <string name="cannot_save_empty_list_message">Нельзя сохранить пустой список!</string>
 </resources>

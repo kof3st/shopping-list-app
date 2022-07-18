@@ -76,6 +76,8 @@ fun HomeScreen(
 private fun HomeScreenSettings(appState: AppState) {
     appState.topBarState.title = homeScreenTitle
     appState.topBarState.visible = true
+    appState.topBarState.hasBackButton = false
+    appState.topBarState.actions = listOf()
 }
 
 @Composable
