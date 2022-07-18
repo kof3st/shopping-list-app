@@ -155,6 +155,8 @@ private fun SearchListBlock(
                 )
             },
             textStyle = MaterialTheme.typography.body1,
+            maxLines = 1,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         Buttons.Button(
