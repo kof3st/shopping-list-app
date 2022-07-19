@@ -27,6 +27,10 @@ fun AuthScreen(
     viewModel: AuthViewModel,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.tryRestoreSession()
+    }
+
     val appState = LocalAppState.current
     val navController = appState.navController
 

@@ -60,6 +60,7 @@ val incorrectPasswordError = UiText.Resource(R.string.error__incorrect_password)
 val invalidUserError = UiText.Resource(R.string.error__invalid_user)
 
 val homeScreenTitle = UiText.Resource(R.string.home_screen_title)
+val clearSessionText = UiText.Resource(R.string.clear_session)
 val shoppingListIdLabel = UiText.Resource(R.string.shopping_list_id_label)
 val searchShoppingListText = UiText.Resource(R.string.search_shopping_list)
 val otherActionText = UiText.Resource(R.string.other_action)

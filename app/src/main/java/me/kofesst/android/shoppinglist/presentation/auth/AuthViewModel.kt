@@ -30,6 +30,23 @@ class AuthViewModel @Inject constructor(
     private val validationChannel = Channel<AuthResult>()
     val formResult = validationChannel.receiveAsFlow()
 
+    fun tryRestoreSession() {
+        viewModelScope.launch {
+            _loadingState.value = true
+
+            val session = useCases.restoreSession()
+            if (session != null) {
+                formState = formState.copy(
+                    email = session.first,
+                    password = session.second
+                )
+                onSubmit()
+            } else {
+                _loadingState.value = false
+            }
+        }
+    }
+
     fun toggleScreenState() {
         screenState = screenState.opposite()
     }
@@ -110,6 +127,11 @@ class AuthViewModel @Inject constructor(
                         )
                     }
                 }
+
+                useCases.saveSession(
+                    email = formState.email,
+                    password = formState.password
+                )
 
                 _loadingState.value = false
                 validationChannel.send(result)

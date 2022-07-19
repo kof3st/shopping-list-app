@@ -5,6 +5,9 @@ import me.kofesst.android.shoppinglist.domain.usecases.validation.*
 data class UseCases(
     val registerUser: RegisterUser,
     val logInUser: LogInUser,
+    val saveSession: SaveSession,
+    val restoreSession: RestoreSession,
+    val clearSession: ClearSession,
     val saveList: SaveList,
     val getList: GetList,
     val deleteList: DeleteList,

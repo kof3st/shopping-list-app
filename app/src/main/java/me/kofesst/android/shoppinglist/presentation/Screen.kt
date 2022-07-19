@@ -12,6 +12,7 @@ import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.create_item.CreateEditItemScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
+import me.kofesst.android.shoppinglist.presentation.home.HomeViewModel
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsViewModel
 
@@ -33,11 +34,13 @@ enum class Screen(
     ),
     HOME(
         routeName = Constants.Home.ROUTE_NAME,
-        content = { _, _, modifier ->
+        content = { viewModel, _, modifier ->
             HomeScreen(
+                viewModel = viewModel as HomeViewModel,
                 modifier = modifier
             )
-        }
+        },
+        viewModelProducer = { _, _ -> hiltViewModel<HomeViewModel>() }
     ),
     LIST_DETAILS(
         routeName = Constants.ListDetails.ROUTE_NAME,

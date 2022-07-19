@@ -44,4 +44,5 @@
     <string name="error__email_already_exists">Данный email уже используется!</string>
     <string name="error__incorrect_password">Некорректный пароль!</string>
     <string name="error__invalid_user">Не удалось загрузить профиль</string>
+    <string name="clear_session">Выйти из профиля</string>
 </resources>

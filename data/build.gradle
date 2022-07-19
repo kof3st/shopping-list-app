@@ -36,6 +36,9 @@ android {
 }
 
 dependencies {
+    // Data store
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+
     // Firebase
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1"
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
