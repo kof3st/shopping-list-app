@@ -36,9 +36,9 @@ class Buttons private constructor() {
                 modifier = modifier
             ) {
                 Text(
-                    text = text.uppercase(),
-                    style = MaterialTheme.typography.button,
-                    color = MaterialTheme.colors.onPrimary
+                    text = text,
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.primary
                 )
             }
         }

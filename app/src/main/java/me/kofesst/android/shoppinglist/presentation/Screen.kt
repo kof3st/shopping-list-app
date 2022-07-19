@@ -11,6 +11,7 @@ import me.kofesst.android.shoppinglist.presentation.auth.AuthViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.create_item.CreateEditItemScreen
+import me.kofesst.android.shoppinglist.presentation.create_list.result.NewListResultScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeViewModel
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
@@ -96,6 +97,24 @@ enum class Screen(
                 defaultValue = -1
             }
         )
+    ),
+    NEW_LIST_RESULT(
+        routeName = Constants.NewListResult.ROUTE_NAME,
+        content = { _, backStack, modifier ->
+            val listId = backStack.arguments?.getString(
+                Constants.NewListResult.LIST_ID_ARG
+            ) ?: "null"
+            NewListResultScreen(
+                listId = listId,
+                modifier = modifier
+            )
+        },
+        args = listOf(
+            navArgument(Constants.NewListResult.LIST_ID_ARG) {
+                type = NavType.StringType
+                defaultValue = "null"
+            }
+        )
     );
 
     class Constants private constructor() {
@@ -128,6 +147,13 @@ enum class Screen(
             companion object {
                 const val ROUTE_NAME = "createEditItem"
                 const val ITEM_INDEX_ARG = "itemIndex"
+            }
+        }
+
+        class NewListResult private constructor() {
+            companion object {
+                const val ROUTE_NAME = "newListResult"
+                const val LIST_ID_ARG = "listId"
             }
         }
     }

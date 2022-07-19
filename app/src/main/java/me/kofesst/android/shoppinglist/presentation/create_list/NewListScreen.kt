@@ -9,8 +9,7 @@ import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,31 +22,31 @@ fun NewListScreen(
     viewModel: NewListViewModel,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     val appState = LocalAppState.current
     val navController = appState.navController
-    val items = viewModel.items
-    val clipboardManager = LocalClipboardManager.current
-    val copyMessage = listIdCopiedMessage.asString()
-    val cannotSaveEmptyMessage = cannotSaveEmptyListMessage.asString()
 
+    val items = viewModel.items
     NewListScreenSettings(
         appState = appState,
         onSubmitClick = {
             if (items.isEmpty()) {
                 appState.showSnackbar(
-                    message = cannotSaveEmptyMessage,
+                    message = cannotSaveEmptyListMessage.asString(context = context),
                     duration = SnackbarDuration.Short
                 )
             } else {
                 viewModel.saveList { listId ->
-                    clipboardManager.setText(
-                        AnnotatedString(text = listId)
-                    )
-                    appState.showSnackbar(
-                        message = copyMessage,
-                        duration = SnackbarDuration.Short
-                    )
-                    navController.navigateUp()
+                    navController.navigate(
+                        Screen.NEW_LIST_RESULT.withArgs(
+                            Screen.Constants.NewListResult.LIST_ID_ARG to listId
+                        )
+                    ) {
+                        popUpTo(Screen.NEW_LIST.routeName) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
         }

@@ -45,4 +45,8 @@
     <string name="error__incorrect_password">Некорректный пароль!</string>
     <string name="error__invalid_user">Не удалось загрузить профиль</string>
     <string name="clear_session">Выйти из профиля</string>
+    <string name="list_created">Список покупок успешно создан!</string>
+    <string name="copy_list_id_action">Поделиться номером</string>
+    <string name="share_list_title">Поделиться списком покупок</string>
+    <string name="go_home_action">На главную</string>
 </resources>
