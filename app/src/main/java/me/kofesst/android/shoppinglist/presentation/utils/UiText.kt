@@ -93,3 +93,8 @@ val logInText = UiText.Resource(R.string.log_in)
 val registerActionText = UiText.Resource(R.string.register_action)
 val registerText = UiText.Resource(R.string.register)
 val logInActionText = UiText.Resource(R.string.log_in_action)
+
+val listCreatedText = UiText.Resource(R.string.list_created)
+val copyListIdActionText = UiText.Resource(R.string.copy_list_id_action)
+val shareListTitle = UiText.Resource(R.string.share_list_title)
+val goHomeActionText = UiText.Resource(R.string.go_home_action)
