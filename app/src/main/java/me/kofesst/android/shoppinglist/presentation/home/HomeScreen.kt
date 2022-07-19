@@ -4,38 +4,38 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.presentation.*
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.TextFields
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun HomeScreenPreview() {
-    CompositionLocalProvider(LocalAppState provides rememberAppState()) {
-        HomeScreen(
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier
 ) {
     val appState = LocalAppState.current
-    HomeScreenSettings(appState)
-
     val navController = appState.navController
+
+    HomeScreenSettings(
+        appState = appState,
+        onClearSession = {
+            viewModel.clearSession {
+                navController.navigate(Screen.AUTH.withArgs()) {
+                    popUpTo(Screen.HOME.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
+    )
 
     Box(modifier = modifier.padding(20.dp)) {
         Column(
@@ -73,11 +73,20 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeScreenSettings(appState: AppState) {
+private fun HomeScreenSettings(
+    appState: AppState,
+    onClearSession: () -> Unit
+) {
     appState.topBarState.title = homeScreenTitle
     appState.topBarState.visible = true
     appState.topBarState.hasBackButton = false
-    appState.topBarState.actions = listOf()
+    appState.topBarState.actions = listOf(
+        TopBarState.Action(
+            imageVector = Icons.Outlined.ExitToApp,
+            contentDescription = clearSessionText,
+            onClick = onClearSession
+        )
+    )
 }
 
 @Composable
@@ -103,14 +112,6 @@ private fun OtherActionDivider(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CreateNewListButtonPreview() {
-    CreateNewListButton(
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
 @Composable
 fun CreateNewListButton(
     modifier: Modifier = Modifier,
@@ -120,14 +121,6 @@ fun CreateNewListButton(
         text = createNewListText.asString(),
         onClick = onClick,
         modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SearchListBlockPreview() {
-    SearchListBlock(
-        modifier = Modifier.fillMaxWidth()
     )
 }
 

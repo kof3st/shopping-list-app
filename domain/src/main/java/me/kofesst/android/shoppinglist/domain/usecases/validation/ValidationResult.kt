@@ -6,6 +6,10 @@ sealed class ValidationResult {
     object LongLength : ValidationResult()
     object InvalidInteger : ValidationResult()
     object NotInRange : ValidationResult()
+    object InvalidEmail : ValidationResult()
+    object PasswordNeedDigit : ValidationResult()
+    object PasswordNeedLetters : ValidationResult()
+    object PasswordContainsSpace : ValidationResult()
 
     object Success : ValidationResult()
 

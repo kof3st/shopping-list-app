@@ -7,4 +7,11 @@ sealed class Constraints {
             val AMOUNT_RANGE = 1..30
         }
     }
+
+    class UserProfile private constructor() {
+        companion object {
+            val NAME_LENGTH_RANGE = 1..20
+            val PASSWORD_LENGTH_RANGE = 6..20
+        }
+    }
 }

@@ -6,10 +6,13 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.*
+import me.kofesst.android.shoppinglist.presentation.auth.AuthScreen
+import me.kofesst.android.shoppinglist.presentation.auth.AuthViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.create_item.CreateEditItemScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
+import me.kofesst.android.shoppinglist.presentation.home.HomeViewModel
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsViewModel
 
@@ -19,13 +22,25 @@ enum class Screen(
     val content: @Composable (ViewModel?, NavBackStackEntry, Modifier) -> Unit,
     val viewModelProducer: (@Composable (NavController, NavBackStackEntry) -> ViewModel)? = null
 ) {
-    HOME(
-        routeName = Constants.Home.ROUTE_NAME,
-        content = { _, _, modifier ->
-            HomeScreen(
+    AUTH(
+        routeName = Constants.Auth.ROUTE_NAME,
+        content = { viewModel, _, modifier ->
+            AuthScreen(
+                viewModel = viewModel as AuthViewModel,
                 modifier = modifier
             )
-        }
+        },
+        viewModelProducer = { _, _ -> hiltViewModel<AuthViewModel>() }
+    ),
+    HOME(
+        routeName = Constants.Home.ROUTE_NAME,
+        content = { viewModel, _, modifier ->
+            HomeScreen(
+                viewModel = viewModel as HomeViewModel,
+                modifier = modifier
+            )
+        },
+        viewModelProducer = { _, _ -> hiltViewModel<HomeViewModel>() }
     ),
     LIST_DETAILS(
         routeName = Constants.ListDetails.ROUTE_NAME,
@@ -84,6 +99,12 @@ enum class Screen(
     );
 
     class Constants private constructor() {
+        class Auth private constructor() {
+            companion object {
+                const val ROUTE_NAME = "auth"
+            }
+        }
+
         class Home private constructor() {
             companion object {
                 const val ROUTE_NAME = "home"

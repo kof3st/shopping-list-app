@@ -1,5 +1,6 @@
 package me.kofesst.android.shoppinglist.presentation.utils
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -11,9 +12,14 @@ sealed class UiText {
     @Composable
     abstract fun asString(vararg formats: Any): String
 
+    abstract fun asString(context: Context, vararg formats: Any): String
+
     data class Static(val text: String) : UiText() {
         @Composable
         override fun asString(vararg formats: Any): String =
+            text.format(*(defaultFormats + formats).toTypedArray())
+
+        override fun asString(context: Context, vararg formats: Any): String =
             text.format(*(defaultFormats + formats).toTypedArray())
     }
 
@@ -21,6 +27,9 @@ sealed class UiText {
         @Composable
         override fun asString(vararg formats: Any): String =
             stringResource(id = resId, *(defaultFormats + formats).toTypedArray())
+
+        override fun asString(context: Context, vararg formats: Any): String =
+            context.resources.getString(resId, *(defaultFormats + formats).toTypedArray())
     }
 }
 
@@ -42,8 +51,16 @@ val longLengthError = UiText.Resource(R.string.error__long_length).apply {
         Constraints.ShoppingItem.NAME_LENGTH_RANGE.last
     )
 }
+val invalidEmailError = UiText.Resource(R.string.error__invalid_email)
+val passwordContainsSpaceError = UiText.Resource(R.string.error__password_contains_space)
+val passwordNeedDigitError = UiText.Resource(R.string.error__password_need_digit)
+val passwordNeedLetterError = UiText.Resource(R.string.error__password_need_letter)
+val emailAlreadyExistsError = UiText.Resource(R.string.error__email_already_exists)
+val incorrectPasswordError = UiText.Resource(R.string.error__incorrect_password)
+val invalidUserError = UiText.Resource(R.string.error__invalid_user)
 
 val homeScreenTitle = UiText.Resource(R.string.home_screen_title)
+val clearSessionText = UiText.Resource(R.string.clear_session)
 val shoppingListIdLabel = UiText.Resource(R.string.shopping_list_id_label)
 val searchShoppingListText = UiText.Resource(R.string.search_shopping_list)
 val otherActionText = UiText.Resource(R.string.other_action)
@@ -67,3 +84,12 @@ val confirmDialogTitle = UiText.Resource(R.string.confirm_dialog_title)
 val confirmDialogMessage = UiText.Resource(R.string.confirm_dialog_message)
 val confirmDialogDismissText = UiText.Resource(R.string.confirm_dialog_dismiss)
 val confirmDialogAcceptText = UiText.Resource(R.string.confirm_dialog_accept)
+
+val emailLabel = UiText.Resource(R.string.email_label)
+val passwordLabel = UiText.Resource(R.string.password_label)
+val firstNameLabel = UiText.Resource(R.string.first_name_label)
+val lastNameLabel = UiText.Resource(R.string.last_name_label)
+val logInText = UiText.Resource(R.string.log_in)
+val registerActionText = UiText.Resource(R.string.register_action)
+val registerText = UiText.Resource(R.string.register)
+val logInActionText = UiText.Resource(R.string.log_in_action)
