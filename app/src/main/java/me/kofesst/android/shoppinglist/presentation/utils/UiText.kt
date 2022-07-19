@@ -1,5 +1,6 @@
 package me.kofesst.android.shoppinglist.presentation.utils
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -11,9 +12,14 @@ sealed class UiText {
     @Composable
     abstract fun asString(vararg formats: Any): String
 
+    abstract fun asString(context: Context, vararg formats: Any): String
+
     data class Static(val text: String) : UiText() {
         @Composable
         override fun asString(vararg formats: Any): String =
+            text.format(*(defaultFormats + formats).toTypedArray())
+
+        override fun asString(context: Context, vararg formats: Any): String =
             text.format(*(defaultFormats + formats).toTypedArray())
     }
 
@@ -21,6 +27,9 @@ sealed class UiText {
         @Composable
         override fun asString(vararg formats: Any): String =
             stringResource(id = resId, *(defaultFormats + formats).toTypedArray())
+
+        override fun asString(context: Context, vararg formats: Any): String =
+            context.resources.getString(resId, *(defaultFormats + formats).toTypedArray())
     }
 }
 
