@@ -14,11 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
-import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.Screen
-import me.kofesst.android.shoppinglist.presentation.route
+import me.kofesst.android.shoppinglist.presentation.*
 import me.kofesst.android.shoppinglist.presentation.utils.*
-import me.kofesst.android.shoppinglist.presentation.withArgs
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.TextFields
 
@@ -32,6 +29,8 @@ fun AuthScreen(
     }
 
     val appState = LocalAppState.current
+    AuthScreenSettings(appState)
+
     val navController = appState.navController
 
     Box(modifier = modifier) {
@@ -79,6 +78,11 @@ fun AuthScreen(
             )
         }
     )
+}
+
+@Composable
+fun AuthScreenSettings(appState: AppState) {
+    appState.topBarState.visible = false
 }
 
 @Composable
