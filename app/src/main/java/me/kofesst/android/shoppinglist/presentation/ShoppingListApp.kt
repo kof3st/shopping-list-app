@@ -53,7 +53,7 @@ private fun ScreensNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HOME.route,
+        startDestination = Screen.AUTH.route,
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)

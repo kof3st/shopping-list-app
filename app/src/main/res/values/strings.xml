@@ -29,4 +29,19 @@
     <string name="confirm_dialog_message">После выполнения списка покупок он больше не будет доступен. Продолжить?</string>
     <string name="confirm_dialog_dismiss">Отмена</string>
     <string name="confirm_dialog_accept">Продолжить</string>
+    <string name="email_label">Введите email</string>
+    <string name="password_label">Введите пароль</string>
+    <string name="first_name_label">Введите имя</string>
+    <string name="last_name_label">Введите фамилию</string>
+    <string name="log_in">Авторизоваться</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="register_action">Ещё нет профиля?</string>
+    <string name="log_in_action">Уже есть профиль?</string>
+    <string name="error__invalid_email">Некорректный email!</string>
+    <string name="error__password_contains_space">В пароле не должно быть пробелов!</string>
+    <string name="error__password_need_digit">Нужна хотя бы одна цифра!</string>
+    <string name="error__password_need_letter">Нужна хотя бы одна буква!</string>
+    <string name="error__email_already_exists">Данный email уже используется!</string>
+    <string name="error__incorrect_password">Некорректный пароль!</string>
+    <string name="error__invalid_user">Не удалось загрузить профиль</string>
 </resources>

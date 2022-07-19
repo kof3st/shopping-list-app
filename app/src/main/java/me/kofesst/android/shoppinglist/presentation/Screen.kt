@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.*
+import me.kofesst.android.shoppinglist.presentation.auth.AuthScreen
+import me.kofesst.android.shoppinglist.presentation.auth.AuthViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
 import me.kofesst.android.shoppinglist.presentation.create_list.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.create_list.create_item.CreateEditItemScreen
@@ -19,6 +21,16 @@ enum class Screen(
     val content: @Composable (ViewModel?, NavBackStackEntry, Modifier) -> Unit,
     val viewModelProducer: (@Composable (NavController, NavBackStackEntry) -> ViewModel)? = null
 ) {
+    AUTH(
+        routeName = Constants.Auth.ROUTE_NAME,
+        content = { viewModel, _, modifier ->
+            AuthScreen(
+                viewModel = viewModel as AuthViewModel,
+                modifier = modifier
+            )
+        },
+        viewModelProducer = { _, _ -> hiltViewModel<AuthViewModel>() }
+    ),
     HOME(
         routeName = Constants.Home.ROUTE_NAME,
         content = { _, _, modifier ->
@@ -84,6 +96,12 @@ enum class Screen(
     );
 
     class Constants private constructor() {
+        class Auth private constructor() {
+            companion object {
+                const val ROUTE_NAME = "auth"
+            }
+        }
+
         class Home private constructor() {
             companion object {
                 const val ROUTE_NAME = "home"

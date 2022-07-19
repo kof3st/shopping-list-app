@@ -5,15 +5,89 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 
 class TextFields private constructor() {
     companion object {
+        @Composable
+        fun OutlinedPasswordTextField(
+            modifier: Modifier = Modifier,
+            value: String = "",
+            onValueChange: (String) -> Unit = {},
+            isReadOnly: Boolean = false,
+            errorMessage: String? = null,
+            label: String = "",
+            leadingIcon: Painter? = null,
+            singleLine: Boolean = true,
+            textStyle: TextStyle = MaterialTheme.typography.body1
+        ) {
+            var passwordVisible by remember {
+                mutableStateOf(false)
+            }
+
+            Column(modifier = modifier) {
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { onValueChange(it) },
+                    readOnly = isReadOnly,
+                    isError = errorMessage != null,
+                    label = {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.body2
+                        )
+                    },
+                    leadingIcon = if (leadingIcon != null) {
+                        {
+                            Icon(
+                                painter = leadingIcon,
+                                contentDescription = null
+                            )
+                        }
+                    } else {
+                        null
+                    },
+                    singleLine = singleLine,
+                    textStyle = textStyle,
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        val icon = if (passwordVisible) {
+                            Icons.Outlined.Visibility
+                        } else {
+                            Icons.Outlined.VisibilityOff
+                        }
+
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                )
+                TextFieldError(
+                    modifier = Modifier.fillMaxWidth(),
+                    message = errorMessage
+                )
+            }
+        }
+
         @Composable
         fun OutlinedNumericTextField(
             modifier: Modifier = Modifier,
