@@ -108,7 +108,10 @@ class ShoppingListRepositoryImpl(
     }
 
     override suspend fun saveList(list: ShoppingList) {
-        val listDto = ShoppingListDto.fromDomain(list)
+        val auth = Firebase.auth
+        val authorUid = auth.currentUser?.uid ?: return
+
+        val listDto = ShoppingListDto.fromDomain(list).copy(authorUid = authorUid)
         val listReference = database.getReference("$LISTS_DB_PATH/${list.id}")
         listReference.setValue(listDto).await()
     }
