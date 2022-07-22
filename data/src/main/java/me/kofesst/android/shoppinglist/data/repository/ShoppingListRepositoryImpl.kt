@@ -119,7 +119,13 @@ class ShoppingListRepositoryImpl(
     override suspend fun getList(id: String): ShoppingList? {
         val listReference = database.getReference("$LISTS_DB_PATH/$id")
         val listDto = listReference.get().await().getValue<ShoppingListDto>()
-        return listDto?.toDomain()
+            ?: return null
+
+        val authorProfileReference = database.getReference("$USERS_DB_PATH/${listDto.authorUid}")
+        val authorProfile = authorProfileReference.get().await().getValue<UserProfileDto>()
+            ?: return null
+
+        return listDto.toDomain(authorProfile.toDomain())
     }
 
     override suspend fun deleteList(id: String) {

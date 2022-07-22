@@ -1,6 +1,7 @@
 package me.kofesst.android.shoppinglist.data.models
 
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
+import me.kofesst.android.shoppinglist.domain.models.UserProfile
 
 data class ShoppingListDto(
     val id: String = "",
@@ -12,14 +13,14 @@ data class ShoppingListDto(
             ShoppingListDto(
                 id = id,
                 items = items.map { ShoppingItemDto.fromDomain(it) },
-                authorUid = authorUid
+                authorUid = author.uid
             )
         }
     }
 
-    fun toDomain() = ShoppingList(
+    fun toDomain(authorProfile: UserProfile) = ShoppingList(
         id = id,
         items = items.map { it.toDomain() }.toMutableList(),
-        authorUid = authorUid
+        author = authorProfile
     )
 }
