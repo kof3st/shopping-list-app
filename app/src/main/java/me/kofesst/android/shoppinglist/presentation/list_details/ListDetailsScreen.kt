@@ -1,5 +1,8 @@
 package me.kofesst.android.shoppinglist.presentation.list_details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
+import me.kofesst.android.shoppinglist.domain.models.UserProfile
 import me.kofesst.android.shoppinglist.presentation.AppState
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.utils.*
@@ -38,18 +42,28 @@ fun ListDetailsScreen(
         mutableStateOf(false)
     }
 
-    Box(modifier = modifier) {
-        ListDetails(detailsState = detailsState) {
-            FloatingActionButton(
-                onClick = { confirmDialogState = true },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(20.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Check,
-                    contentDescription = null
-                )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = modifier
+    ) {
+        ListAuthorDetailsPanel(
+            detailsState = detailsState,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            ListDetails(detailsState = detailsState) {
+                FloatingActionButton(
+                    onClick = { confirmDialogState = true },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(20.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
@@ -178,5 +192,59 @@ private fun LoadingPanel() {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center)
         )
+    }
+}
+
+@Composable
+private fun ListAuthorDetailsPanel(
+    detailsState: LoadingState<ShoppingList>,
+    modifier: Modifier = Modifier
+) {
+    val isLoaded = detailsState is LoadingState.Loaded
+    AnimatedVisibility(
+        visible = isLoaded,
+        enter = slideInVertically(),
+        exit = slideOutVertically(),
+        modifier = modifier
+    ) {
+        if (detailsState is LoadingState.Loaded) {
+            val author = detailsState.value?.author
+            if (author != null) {
+                ListAuthorDetails(
+                    author = author,
+                    modifier = Modifier.padding(20.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ListAuthorDetails(
+    author: UserProfile,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        elevation = 8.dp,
+        modifier = modifier
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Отправлено от:",
+                style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.ExtraLight,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = author.fullName,
+                style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
