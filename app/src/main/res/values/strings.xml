@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShoppingListApp</string>
+    <string name="app_name">Shopping List</string>
     <string name="error__empty_field">Необходимо заполнить!</string>
     <string name="error__invalid_int">Необходимо целое число!</string>
     <string name="error__not_in_range">Нужно число от %d то %d!</string>
