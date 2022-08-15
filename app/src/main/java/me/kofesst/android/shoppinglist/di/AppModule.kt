@@ -12,8 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.kofesst.android.shoppinglist.data.repository.ShoppingListRepositoryImpl
 import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
-import me.kofesst.android.shoppinglist.domain.usecases.*
-import me.kofesst.android.shoppinglist.domain.usecases.validation.*
+import me.kofesst.android.shoppinglist.domain.usecases.UseCases
 import javax.inject.Singleton
 
 @Module
@@ -38,21 +37,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUseCases(repository: ShoppingListRepository): UseCases {
-        return UseCases(
-            registerUser = RegisterUser(repository),
-            logInUser = LogInUser(repository),
-            saveSession = SaveSession(repository),
-            restoreSession = RestoreSession(repository),
-            clearSession = ClearSession(repository),
-            saveList = SaveList(repository),
-            getList = GetList(repository),
-            deleteList = DeleteList(repository),
-            validateForEmptyField = ValidateForEmptyField(),
-            validateForLength = ValidateForLength(),
-            validateForInteger = ValidateForInteger(),
-            validateForIntRange = ValidateForIntRange(),
-            validateForEmail = ValidateForEmail(),
-            validateForPassword = ValidateForPassword()
-        )
+        return UseCases(repository)
     }
 }
