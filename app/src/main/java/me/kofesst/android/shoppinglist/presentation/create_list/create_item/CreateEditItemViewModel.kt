@@ -54,10 +54,18 @@ class CreateEditItemViewModel @Inject constructor(
             lengthRange = Constraints.ShoppingItem.NAME_LENGTH_RANGE
         )
 
-        val amountResult = useCases.validateForIntRange(
-            value = formState.amount,
-            range = Constraints.ShoppingItem.AMOUNT_RANGE
-        )
+        val amountResult = useCases.validateForNotNull(
+            value = formState.amount
+        ).run {
+            if (this is ValidationResult.Success) {
+                useCases.validateForIntRange(
+                    value = formState.amount!!,
+                    range = Constraints.ShoppingItem.AMOUNT_RANGE
+                )
+            } else {
+                this
+            }
+        }
 
         formState = formState.copy(
             nameError = nameResult.errorMessage,
@@ -73,7 +81,7 @@ class CreateEditItemViewModel @Inject constructor(
             viewModelScope.launch {
                 val item = ShoppingItem(
                     name = formState.name,
-                    amount = formState.amount
+                    amount = formState.amount!!
                 )
                 validationChannel.send(
                     CreateEditItemResult.Success(item)

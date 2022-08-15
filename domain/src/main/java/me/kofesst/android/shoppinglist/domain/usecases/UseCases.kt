@@ -15,6 +15,7 @@ class UseCases(
     val getList: GetList = GetList(repository),
     val deleteList: DeleteList = DeleteList(repository),
 
+    val validateForNotNull: ValidateForNotNull = ValidateForNotNull(),
     val validateForEmptyField: ValidateForEmptyField = ValidateForEmptyField(),
     val validateForLength: ValidateForLength = ValidateForLength(),
     val validateForIntRange: ValidateForIntRange = ValidateForIntRange(),

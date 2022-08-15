@@ -91,8 +91,8 @@ class TextFields private constructor() {
         @Composable
         fun OutlinedNumericTextField(
             modifier: Modifier = Modifier,
-            value: Int = 0,
-            onValueChange: (Int) -> Unit = {},
+            value: Int? = 0,
+            onValueChange: (Int?) -> Unit = {},
             isReadOnly: Boolean = false,
             errorMessage: String? = null,
             label: String = "",
@@ -104,11 +104,11 @@ class TextFields private constructor() {
         ) {
             Column(modifier = modifier) {
                 OutlinedTextField(
-                    value = value.toString(),
+                    value = value?.toString() ?: "",
                     onValueChange = {
                         onValueChange(
                             if (it.isBlank()) {
-                                value
+                                null
                             } else {
                                 it.toIntOrNull() ?: value
                             }
