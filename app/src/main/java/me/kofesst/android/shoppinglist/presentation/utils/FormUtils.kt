@@ -5,6 +5,7 @@ import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 
 val ValidationResult.errorMessage: UiText?
     get() = when (this) {
+        ValidationResult.NullField -> emptyFieldError
         ValidationResult.EmptyField -> emptyFieldError
         ValidationResult.InvalidInteger -> invalidIntError
         ValidationResult.NotInRange -> notInRangeError

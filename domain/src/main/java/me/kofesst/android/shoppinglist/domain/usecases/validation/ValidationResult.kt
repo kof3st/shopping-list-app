@@ -1,6 +1,7 @@
 package me.kofesst.android.shoppinglist.domain.usecases.validation
 
 sealed class ValidationResult {
+    object NullField : ValidationResult()
     object EmptyField : ValidationResult()
     object SmallLength : ValidationResult()
     object LongLength : ValidationResult()

@@ -1,20 +1,24 @@
 package me.kofesst.android.shoppinglist.domain.usecases
 
+import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
 import me.kofesst.android.shoppinglist.domain.usecases.validation.*
 
-data class UseCases(
-    val registerUser: RegisterUser,
-    val logInUser: LogInUser,
-    val saveSession: SaveSession,
-    val restoreSession: RestoreSession,
-    val clearSession: ClearSession,
-    val saveList: SaveList,
-    val getList: GetList,
-    val deleteList: DeleteList,
-    val validateForEmptyField: ValidateForEmptyField,
-    val validateForLength: ValidateForLength,
-    val validateForInteger: ValidateForInteger,
-    val validateForIntRange: ValidateForIntRange,
-    val validateForEmail: ValidateForEmail,
-    val validateForPassword: ValidateForPassword
+class UseCases(
+    repository: ShoppingListRepository,
+
+    val registerUser: RegisterUser = RegisterUser(repository),
+    val logInUser: LogInUser = LogInUser(repository),
+    val saveSession: SaveSession = SaveSession(repository),
+    val restoreSession: RestoreSession = RestoreSession(repository),
+    val clearSession: ClearSession = ClearSession(repository),
+    val saveList: SaveList = SaveList(repository),
+    val getList: GetList = GetList(repository),
+    val deleteList: DeleteList = DeleteList(repository),
+
+    val validateForNotNull: ValidateForNotNull = ValidateForNotNull(),
+    val validateForEmptyField: ValidateForEmptyField = ValidateForEmptyField(),
+    val validateForLength: ValidateForLength = ValidateForLength(),
+    val validateForIntRange: ValidateForIntRange = ValidateForIntRange(),
+    val validateForEmail: ValidateForEmail = ValidateForEmail(),
+    val validateForPassword: ValidateForPassword = ValidateForPassword()
 )
