@@ -26,6 +26,9 @@ class ShoppingListRepositoryImpl(
     private val dataStore: DataStore<Preferences>
 ) : ShoppingListRepository {
     companion object {
+        private const val USERS_DB_PATH = "users"
+        private const val LISTS_DB_PATH = "lists"
+
         private val EMAIL_SESSION_KEY = stringPreferencesKey("session_email")
         private val PASSWORD_SESSION_KEY = stringPreferencesKey("session_password")
     }
@@ -49,7 +52,9 @@ class ShoppingListRepositoryImpl(
                 lastName = lastName
             )
 
-            database.getReference(profile.uid).setValue(profile).await()
+            val userReference = database.getReference("$USERS_DB_PATH/${profile.uid}")
+            userReference.setValue(profile).await()
+
             AuthResult.Success.Registered(profile.toDomain())
         } catch (exception: Exception) {
             handleAuthException(exception)
@@ -62,8 +67,8 @@ class ShoppingListRepositoryImpl(
             val result = auth.signInWithEmailAndPassword(email, password).await()
             val user = result.user ?: return AuthResult.Failed.InvalidUser
 
-            val reference = database.getReference(user.uid)
-            val profile = reference.get().await().getValue<UserProfileDto>()
+            val userReference = database.getReference("$USERS_DB_PATH/${user.uid}")
+            val profile = userReference.get().await().getValue<UserProfileDto>()
                 ?: return AuthResult.Failed.InvalidUser
 
             return AuthResult.Success.LoggedIn(profile.toDomain())
@@ -103,18 +108,28 @@ class ShoppingListRepositoryImpl(
     }
 
     override suspend fun saveList(list: ShoppingList) {
-        val listDto = ShoppingListDto.fromDomain(list)
-        database.getReference(list.id).setValue(listDto).await()
+        val auth = Firebase.auth
+        val authorUid = auth.currentUser?.uid ?: return
+
+        val listDto = ShoppingListDto.fromDomain(list).copy(authorUid = authorUid)
+        val listReference = database.getReference("$LISTS_DB_PATH/${list.id}")
+        listReference.setValue(listDto).await()
     }
 
     override suspend fun getList(id: String): ShoppingList? {
-        val reference = database.getReference(id)
-        val listDto = reference.get().await().getValue<ShoppingListDto>()
-        return listDto?.toDomain()
+        val listReference = database.getReference("$LISTS_DB_PATH/$id")
+        val listDto = listReference.get().await().getValue<ShoppingListDto>()
+            ?: return null
+
+        val authorProfileReference = database.getReference("$USERS_DB_PATH/${listDto.authorUid}")
+        val authorProfile = authorProfileReference.get().await().getValue<UserProfileDto>()
+            ?: return null
+
+        return listDto.toDomain(authorProfile.toDomain())
     }
 
     override suspend fun deleteList(id: String) {
-        val reference = database.getReference(id)
-        reference.setValue(null).await()
+        val listReference = database.getReference("$LISTS_DB_PATH/$id")
+        listReference.setValue(null).await()
     }
 }

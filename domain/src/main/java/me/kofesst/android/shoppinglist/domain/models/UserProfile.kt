@@ -4,4 +4,6 @@ data class UserProfile(
     val uid: String,
     var firstName: String = "",
     var lastName: String = ""
-)
+) {
+    val fullName: String get() = "$firstName $lastName"
+}
