@@ -3,20 +3,25 @@ package me.kofesst.android.shoppinglist.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 class TextFields private constructor() {
     companion object {
         @Composable
@@ -39,24 +44,10 @@ class TextFields private constructor() {
                 OutlinedTextField(
                     value = value,
                     onValueChange = { onValueChange(it) },
-                    readOnly = isReadOnly,
-                    isError = errorMessage != null,
-                    label = {
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.body2
-                        )
-                    },
-                    leadingIcon = if (leadingIcon != null) {
-                        {
-                            Icon(
-                                painter = leadingIcon,
-                                contentDescription = null
-                            )
-                        }
-                    } else {
-                        null
-                    },
+                    isReadOnly = isReadOnly,
+                    errorMessage = errorMessage,
+                    label = label,
+                    leadingIcon = leadingIcon,
                     singleLine = singleLine,
                     textStyle = textStyle,
                     modifier = Modifier.fillMaxWidth(),
@@ -66,19 +57,15 @@ class TextFields private constructor() {
                         PasswordVisualTransformation()
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    trailingIcon = {
-                        val icon = if (passwordVisible) {
+                    trailingIcon = rememberVectorPainter(
+                        if (passwordVisible) {
                             Icons.Outlined.Visibility
                         } else {
                             Icons.Outlined.VisibilityOff
                         }
-
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = null
-                            )
-                        }
+                    ),
+                    onTrailingIconClick = {
+                        passwordVisible = !passwordVisible
                     }
                 )
                 TextFieldError(
@@ -114,37 +101,13 @@ class TextFields private constructor() {
                             }
                         )
                     },
-                    readOnly = isReadOnly,
-                    isError = errorMessage != null,
-                    label = {
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.body2
-                        )
-                    },
-                    leadingIcon = if (leadingIcon != null) {
-                        {
-                            Icon(
-                                painter = leadingIcon,
-                                contentDescription = null
-                            )
-                        }
-                    } else {
-                        null
-                    },
+                    isReadOnly = isReadOnly,
+                    errorMessage = errorMessage,
+                    label = label,
+                    leadingIcon = leadingIcon,
                     singleLine = singleLine,
-                    trailingIcon = if (trailingIcon != null) {
-                        {
-                            IconButton(onClick = onTrailingIconClick) {
-                                Icon(
-                                    painter = trailingIcon,
-                                    contentDescription = null
-                                )
-                            }
-                        }
-                    } else {
-                        null
-                    },
+                    trailingIcon = trailingIcon,
+                    onTrailingIconClick = onTrailingIconClick,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = textStyle,
                     modifier = Modifier.fillMaxWidth()
@@ -156,6 +119,7 @@ class TextFields private constructor() {
             }
         }
 
+        @OptIn(ExperimentalComposeUiApi::class)
         @Composable
         fun OutlinedTextField(
             modifier: Modifier = Modifier,
@@ -168,8 +132,12 @@ class TextFields private constructor() {
             trailingIcon: Painter? = null,
             onTrailingIconClick: () -> Unit = {},
             singleLine: Boolean = true,
-            textStyle: TextStyle = MaterialTheme.typography.body1
+            textStyle: TextStyle = MaterialTheme.typography.body1,
+            keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+            visualTransformation: VisualTransformation = VisualTransformation.None
         ) {
+            val keyboardController = LocalSoftwareKeyboardController.current
+
             Column(modifier = modifier) {
                 OutlinedTextField(
                     value = value,
@@ -206,6 +174,13 @@ class TextFields private constructor() {
                         null
                     },
                     textStyle = textStyle,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    visualTransformation = visualTransformation,
                     modifier = Modifier.fillMaxWidth()
                 )
                 TextFieldError(
