@@ -70,6 +70,15 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun onSubmit() {
+        formState = formState.run {
+            this.copy(
+                email = email.trim(),
+                password = password.trim(),
+                firstName = firstName.trim(),
+                lastName = lastName.trim()
+            )
+        }
+
         val emailResult = useCases.validateForEmail(formState.email)
         val passwordResult = useCases.validateForLength(
             value = formState.password,
