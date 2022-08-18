@@ -13,7 +13,7 @@ class UseCases(
     val clearSession: ClearSession = ClearSession(repository),
     val saveList: SaveList = SaveList(repository),
     val getList: GetList = GetList(repository),
-    val deleteList: DeleteList = DeleteList(repository),
+    val completeList: CompleteList = CompleteList(repository),
 
     val validateForNotNull: ValidateForNotNull = ValidateForNotNull(),
     val validateForEmptyField: ValidateForEmptyField = ValidateForEmptyField(),

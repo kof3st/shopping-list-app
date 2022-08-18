@@ -18,9 +18,12 @@ import kotlinx.coroutines.tasks.await
 import me.kofesst.android.shoppinglist.data.BuildConfig
 import me.kofesst.android.shoppinglist.data.models.ShoppingListDto
 import me.kofesst.android.shoppinglist.data.models.UserProfileDto
+import me.kofesst.android.shoppinglist.data.models.done.DoneShoppingListDto
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
+import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
+import java.util.*
 
 class ShoppingListRepositoryImpl(
     private val dataStore: DataStore<Preferences>
@@ -28,6 +31,7 @@ class ShoppingListRepositoryImpl(
     companion object {
         private const val USERS_DB_PATH = "users"
         private const val LISTS_DB_PATH = "lists"
+        private const val DONE_LISTS_DB_PATH = "done"
 
         private val EMAIL_SESSION_KEY = stringPreferencesKey("session_email")
         private val PASSWORD_SESSION_KEY = stringPreferencesKey("session_password")
@@ -128,8 +132,16 @@ class ShoppingListRepositoryImpl(
         return listDto.toDomain(authorProfile.toDomain())
     }
 
-    override suspend fun deleteList(id: String) {
-        val listReference = database.getReference("$LISTS_DB_PATH/$id")
+    override suspend fun completeList(list: DoneShoppingList) {
+        val doneListDto = DoneShoppingListDto.fromDomain(
+            list.copy(
+                completedAt = Date().time
+            )
+        )
+        val doneListReference = database.getReference("$DONE_LISTS_DB_PATH/${list.id}")
+        doneListReference.setValue(doneListDto)
+
+        val listReference = database.getReference("$LISTS_DB_PATH/${list.id}")
         listReference.setValue(null).await()
     }
 }

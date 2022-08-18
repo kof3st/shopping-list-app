@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.models.UserProfile
+import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.presentation.AppState
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.utils.*
@@ -75,7 +75,7 @@ fun ListDetailsScreen(
             },
             onAccept = {
                 confirmDialogState = false
-                viewModel.deleteList {
+                viewModel.completeList {
                     navController.navigateUp()
                 }
             }
@@ -93,7 +93,7 @@ private fun ListDetailsScreenSettings(appState: AppState) {
 
 @Composable
 private fun ListDetails(
-    detailsState: LoadingState<ShoppingList>,
+    detailsState: LoadingState<DoneShoppingList>,
     checkButton: @Composable () -> Unit
 ) {
     when (detailsState) {
@@ -112,7 +112,7 @@ private fun ListDetails(
                 ErrorPanel()
             } else {
                 ShoppingListColumn(
-                    list = list.items,
+                    items = list.items,
                     modifier = Modifier.fillMaxSize()
                 )
                 checkButton()
@@ -197,7 +197,7 @@ private fun LoadingPanel() {
 
 @Composable
 private fun ListAuthorDetailsPanel(
-    detailsState: LoadingState<ShoppingList>,
+    detailsState: LoadingState<DoneShoppingList>,
     modifier: Modifier = Modifier
 ) {
     val isLoaded = detailsState is LoadingState.Loaded

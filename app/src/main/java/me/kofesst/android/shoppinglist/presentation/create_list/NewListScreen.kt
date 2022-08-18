@@ -53,7 +53,7 @@ fun NewListScreen(
     )
     Box(modifier = modifier) {
         ShoppingListColumn(
-            list = items,
+            items = items,
             onItemClick = {
                 navController.navigate(
                     Screen.CREATE_EDIT_ITEM.withArgs(
