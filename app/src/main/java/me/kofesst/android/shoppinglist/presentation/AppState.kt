@@ -5,11 +5,12 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import me.kofesst.android.shoppinglist.presentation.screen.BottomBarSettings
+import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
 import me.kofesst.android.shoppinglist.presentation.utils.UiText
 
 @Stable
@@ -59,24 +60,29 @@ fun rememberAppState(
 
 class TopBarState(
     visible: Boolean = false,
-    title: UiText = UiText.Static(""),
     hasBackButton: Boolean = false,
-    actions: List<Action> = listOf()
+    title: UiText = UiText.Static(""),
+    actions: List<TopBarSettings.Action> = emptyList()
 ) {
     var visible by mutableStateOf(visible)
-    var title by mutableStateOf(title)
     var hasBackButton by mutableStateOf(hasBackButton)
+    var title by mutableStateOf(title)
     var actions by mutableStateOf(actions)
 
-    class Action(
-        val imageVector: ImageVector,
-        val contentDescription: UiText,
-        val onClick: () -> Unit = {}
-    )
+    fun applySettings(settings: TopBarSettings) {
+        visible = settings.visible
+        hasBackButton = settings.hasBackButton
+        title = settings.title
+        actions = settings.actions
+    }
 }
 
 class BottomBarState(
     visible: Boolean = false
 ) {
     var visible by mutableStateOf(visible)
+
+    fun applySettings(settings: BottomBarSettings) {
+        visible = settings.visible
+    }
 }

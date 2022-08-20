@@ -72,6 +72,8 @@ val submitListText = UiText.Resource(R.string.submit_list)
 val emptyListMessage = UiText.Resource(R.string.empty_list_message)
 val listIdCopiedMessage = UiText.Resource(R.string.list_id_copied_message)
 val cannotSaveEmptyListMessage = UiText.Resource(R.string.cannot_save_empty_list_message)
+val queryListIdIsEmptyMessage = UiText.Resource(R.string.query_list_id_is_empty_message)
+val listSentFromText = UiText.Resource(R.string.list_sent_from)
 
 val createEditItemScreenTitle = UiText.Resource(R.string.create_edit_item_screen_title)
 val submitItemText = UiText.Resource(R.string.submit_item)

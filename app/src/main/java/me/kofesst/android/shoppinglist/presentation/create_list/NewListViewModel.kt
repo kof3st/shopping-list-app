@@ -1,19 +1,17 @@
 package me.kofesst.android.shoppinglist.presentation.create_list
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.usecases.UseCases
+import me.kofesst.android.shoppinglist.presentation.SuspendViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class NewListViewModel @Inject constructor(
     private val useCases: UseCases
-) : ViewModel() {
+) : SuspendViewModel() {
     val items = mutableStateListOf<ShoppingItem>()
 
     fun addItem(item: ShoppingItem) {
@@ -29,7 +27,7 @@ class NewListViewModel @Inject constructor(
     }
 
     fun saveList(onComplete: (String) -> Unit = {}) {
-        viewModelScope.launch {
+        runSuspend {
             val list = ShoppingList(items = items)
             useCases.saveList(list)
             onComplete(list.id)

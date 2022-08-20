@@ -1,18 +1,15 @@
 package me.kofesst.android.shoppinglist.presentation.auth
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import me.kofesst.android.shoppinglist.domain.usecases.UseCases
 import me.kofesst.android.shoppinglist.domain.usecases.validation.ValidationResult
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
+import me.kofesst.android.shoppinglist.presentation.SuspendViewModel
 import me.kofesst.android.shoppinglist.presentation.utils.Constraints
 import me.kofesst.android.shoppinglist.presentation.utils.errorMessage
 import javax.inject.Inject
@@ -20,30 +17,27 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val useCases: UseCases
-) : ViewModel() {
+) : SuspendViewModel() {
     var formState by mutableStateOf(AuthFormState())
     var screenState by mutableStateOf<AuthScreenState>(AuthScreenState.LogIn)
-
-    private val _loadingState = mutableStateOf(false)
-    val loadingState: State<Boolean> = _loadingState
 
     private val validationChannel = Channel<AuthResult>()
     val formResult = validationChannel.receiveAsFlow()
 
     fun tryRestoreSession() {
-        viewModelScope.launch {
-            _loadingState.value = true
-
-            val session = useCases.restoreSession()
-            if (session != null) {
-                formState = formState.copy(
-                    email = session.first,
-                    password = session.second
-                )
-                onSubmit()
-            } else {
-                _loadingState.value = false
+        var session: Pair<String, String>? = null
+        runSuspend(
+            afterRun = {
+                session?.run {
+                    formState = formState.copy(
+                        email = this.first,
+                        password = this.second
+                    )
+                    onSubmit()
+                }
             }
+        ) {
+            session = useCases.restoreSession()
         }
     }
 
@@ -118,8 +112,7 @@ class AuthViewModel @Inject constructor(
         ).any { it !is ValidationResult.Success }
 
         if (!hasError) {
-            viewModelScope.launch {
-                _loadingState.value = true
+            runSuspend {
                 val result = when (screenState) {
                     is AuthScreenState.Register -> {
                         useCases.registerUser(
@@ -141,8 +134,6 @@ class AuthViewModel @Inject constructor(
                     email = formState.email,
                     password = formState.password
                 )
-
-                _loadingState.value = false
                 validationChannel.send(result)
             }
         }

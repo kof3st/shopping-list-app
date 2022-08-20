@@ -1,6 +1,5 @@
 package me.kofesst.android.shoppinglist.presentation
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +17,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import me.kofesst.android.shoppinglist.presentation.screen.Screen
+import me.kofesst.android.shoppinglist.presentation.screen.route
 
 val LocalAppState = compositionLocalOf<AppState> {
     error("App state didn't initialize")
@@ -29,6 +32,9 @@ fun ShoppingListApp() {
     val topBarState = remember { appState.topBarState }
     val bottomBarState = remember { appState.bottomBarState }
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         scaffoldState = appState.scaffoldState,
         topBar = {
@@ -37,7 +43,13 @@ fun ShoppingListApp() {
                 navController = navController
             )
         },
-        bottomBar = { BottomBar(bottomBarState) }
+        bottomBar = {
+            BottomBar(
+                state = bottomBarState,
+                currentScreenRoute = currentRoute,
+                navController = navController
+            )
+        }
     ) {
         ScreensNavHost(
             navController = navController,
@@ -53,18 +65,21 @@ private fun ScreensNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.AUTH.route,
+        startDestination = Screen.Auth.routeName,
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
     ) {
-        Screen.values().forEach { screen ->
+        Screen.values.forEach { screen ->
             composable(
                 route = screen.route,
                 arguments = screen.args
             ) {
-                val viewModel = screen.viewModelProducer?.invoke(navController, it)
-                screen.content(viewModel, it, Modifier.fillMaxSize())
+                screen.ScreenContent(
+                    navController = navController,
+                    backStackEntry = it,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
@@ -75,11 +90,7 @@ private fun TopBar(
     state: TopBarState,
     navController: NavController
 ) {
-    AnimatedVisibility(
-        visible = state.visible,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
-    ) {
+    if (state.visible) {
         TopAppBar(
             title = {
                 Text(
@@ -89,10 +100,11 @@ private fun TopBar(
             },
             actions = {
                 state.actions.forEach {
-                    IconButton(onClick = it.onClick) {
+                    val action = it.onClick()
+                    IconButton(onClick = action) {
                         Icon(
-                            imageVector = it.imageVector,
-                            contentDescription = it.contentDescription.asString()
+                            imageVector = it.icon,
+                            contentDescription = it.description.asString()
                         )
                     }
                 }
@@ -115,17 +127,48 @@ private fun TopBar(
 }
 
 @Composable
-private fun BottomBar(state: BottomBarState) {
-    AnimatedVisibility(
-        visible = state.visible,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
-    ) {
+private fun BottomBar(
+    state: BottomBarState,
+    currentScreenRoute: String?,
+    navController: NavController
+) {
+    val bottomBarScreens = Screen.values.filter { screen ->
+        screen.bottomBarSettings.visible
+    }
+    if (state.visible) {
         BottomAppBar(
             elevation = 5.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Screen.values()
+            bottomBarScreens.forEach { screen ->
+                val isActive = screen.route == currentScreenRoute
+                BottomNavigationItem(
+                    selected = isActive,
+                    icon = {
+                        Icon(
+                            imageVector = screen.bottomBarSettings.icon,
+                            contentDescription = screen.bottomBarSettings.title.asString()
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = screen.bottomBarSettings.title.asString(),
+                            style = MaterialTheme.typography.body2
+                        )
+                    },
+                    onClick = {
+                        if (!isActive) {
+                            navController.navigate(screen.route) {
+                                if (currentScreenRoute != null) {
+                                    popUpTo(currentScreenRoute) {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                )
+            }
         }
     }
 }
