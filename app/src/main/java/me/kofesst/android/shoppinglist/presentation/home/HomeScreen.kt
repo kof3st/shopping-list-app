@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,10 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.screen.Screen
-import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
-import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
-import me.kofesst.android.shoppinglist.presentation.screen.withArgs
+import me.kofesst.android.shoppinglist.presentation.screen.*
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
@@ -54,6 +52,11 @@ class HomeScreen(
                 }
             )
         )
+    ),
+    bottomBarSettings = BottomBarSettings(
+        visible = true,
+        icon = Icons.Outlined.Home,
+        title = homeScreenTitle
     )
 ) {
     override val viewModelProducer:
