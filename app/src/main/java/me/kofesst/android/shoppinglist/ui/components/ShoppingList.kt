@@ -9,11 +9,123 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
+import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingItem
+import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
+import me.kofesst.android.shoppinglist.presentation.utils.*
+
+@Composable
+fun DoneShoppingListItem(
+    shoppingList: DoneShoppingList,
+    modifier: Modifier = Modifier
+) {
+    ShoppingListItem(
+        title = doneListText.asString(),
+        itemsCount = shoppingList.items.size,
+        doneBy = shoppingList.doneBy,
+        doneAt = shoppingList.doneAt,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ShoppingListItem(
+    shoppingList: ShoppingList,
+    modifier: Modifier = Modifier
+) {
+    ShoppingListItem(
+        title = activeListText.asString(),
+        itemsCount = shoppingList.items.size,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ShoppingListItem(
+    title: String,
+    itemsCount: Int,
+    modifier: Modifier = Modifier,
+    doneBy: String? = null,
+    doneAt: Long? = null,
+    elevation: Dp = 10.dp,
+    padding: Dp = 20.dp
+) {
+    Card(
+        elevation = elevation,
+        modifier = modifier
+    ) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(padding)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = buildAnnotatedString {
+                    append(listItemsText.asString())
+                    append(" ")
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("$itemsCount шт.")
+                    }
+                },
+                style = MaterialTheme.typography.body2
+            )
+            if (doneBy != null) {
+                Text(
+                    text = buildAnnotatedString {
+                        append(listDoneByText.asString())
+                        append(" ")
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold
+                            )
+                        ) {
+                            append(doneBy)
+                        }
+                    },
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            if (doneAt != null) {
+                Text(
+                    text = buildAnnotatedString {
+                        append(listDoneAtText.asString())
+                        append(" ")
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold
+                            )
+                        ) {
+                            append(
+                                doneAt.formatDate(
+                                    showTime = true
+                                )
+                            )
+                        }
+                    },
+                    style = MaterialTheme.typography.body2
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun ShoppingListColumn(
@@ -28,7 +140,7 @@ fun ShoppingListColumn(
                 var completed by remember {
                     mutableStateOf(item.completed)
                 }
-                ShoppingListItem(
+                ShoppingItem(
                     item = item,
                     completed = completed,
                     modifier = modifier,
@@ -56,7 +168,7 @@ fun ShoppingListColumn(
     ShoppingListContent(
         items = items.mapIndexed { index, item ->
             { modifier ->
-                ShoppingListItem(
+                ShoppingItem(
                     item = item,
                     modifier = modifier,
                     onClick = { onItemClick(index) }
@@ -99,7 +211,7 @@ fun ShoppingListContent(
 }
 
 @Composable
-private fun ShoppingListItem(
+private fun ShoppingItem(
     item: DoneShoppingItem,
     modifier: Modifier = Modifier,
     completed: Boolean = false,
@@ -115,7 +227,7 @@ private fun ShoppingListItem(
                 .fillMaxWidth()
                 .padding(14.dp)
         ) {
-            ShoppingListItemContent(
+            ShoppingItemContent(
                 name = item.name,
                 amount = item.amount,
                 modifier = Modifier.weight(1.0f)
@@ -132,7 +244,7 @@ private fun ShoppingListItem(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ShoppingListItem(
+private fun ShoppingItem(
     item: ShoppingItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
@@ -141,7 +253,7 @@ private fun ShoppingListItem(
         onClick = onClick,
         modifier = modifier
     ) {
-        ShoppingListItemContent(
+        ShoppingItemContent(
             name = item.name,
             amount = item.amount,
             modifier = Modifier
@@ -152,7 +264,7 @@ private fun ShoppingListItem(
 }
 
 @Composable
-private fun ShoppingListItemContent(
+private fun ShoppingItemContent(
     name: String,
     amount: Int,
     modifier: Modifier = Modifier

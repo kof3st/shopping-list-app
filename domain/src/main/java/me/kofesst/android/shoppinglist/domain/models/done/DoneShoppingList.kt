@@ -7,19 +7,22 @@ data class DoneShoppingList(
     val id: String,
     val items: List<DoneShoppingItem> = emptyList(),
     val author: UserProfile = UserProfile(uid = ""),
-    val completedAt: Long
+    val doneAt: Long,
+    val doneBy: String
 ) {
     companion object {
         fun fromList(
             list: ShoppingList,
             items: List<DoneShoppingItem>,
-            completedAt: Long
+            doneAt: Long,
+            doneBy: String
         ) = list.run {
             DoneShoppingList(
                 id = id,
                 items = items,
                 author = author,
-                completedAt = completedAt
+                doneAt = doneAt,
+                doneBy = doneBy
             )
         }
     }

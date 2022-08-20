@@ -28,12 +28,14 @@ class ListDetailsViewModel @Inject constructor(
                         if (this == null) {
                             null
                         } else {
+                            val doneBy = useCases.getLoggedUserProfile()?.fullName ?: ""
                             DoneShoppingList.fromList(
                                 this,
                                 items = this.items.map {
                                     DoneShoppingItem.fromDefault(it)
                                 },
-                                completedAt = 0
+                                doneAt = 0,
+                                doneBy = doneBy
                             )
                         }
                     }

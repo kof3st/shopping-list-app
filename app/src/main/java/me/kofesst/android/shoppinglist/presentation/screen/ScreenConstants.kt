@@ -39,4 +39,10 @@ sealed class ScreenConstants {
             const val LIST_ID_ARG_NAME = "id"
         }
     }
+
+    class Lists private constructor() {
+        companion object {
+            const val ROUTE_NAME = "lists"
+        }
+    }
 }

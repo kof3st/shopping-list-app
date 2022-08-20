@@ -15,6 +15,7 @@ import me.kofesst.android.shoppinglist.presentation.create_list.create_item.NewL
 import me.kofesst.android.shoppinglist.presentation.create_list.result.NewListResultScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
 import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
+import me.kofesst.android.shoppinglist.presentation.lists.ListsScreen
 
 abstract class Screen<ScreenViewModel : ViewModel>(
     val routeName: String,
@@ -29,6 +30,7 @@ abstract class Screen<ScreenViewModel : ViewModel>(
         val NewList = NewListScreen(ScreenConstants.NewList.ROUTE_NAME)
         val NewListItem = NewListItemScreen(ScreenConstants.NewListItem.ROUTE_NAME)
         val NewListResult = NewListResultScreen(ScreenConstants.NewListResult.ROUTE_NAME)
+        val ListsScreen = ListsScreen(ScreenConstants.Lists.ROUTE_NAME)
 
         val values = listOf(
             Auth,
@@ -36,7 +38,8 @@ abstract class Screen<ScreenViewModel : ViewModel>(
             ListDetails,
             NewList,
             NewListItem,
-            NewListResult
+            NewListResult,
+            ListsScreen
         )
     }
 

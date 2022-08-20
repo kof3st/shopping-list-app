@@ -20,6 +20,7 @@ import me.kofesst.android.shoppinglist.data.models.ShoppingListDto
 import me.kofesst.android.shoppinglist.data.models.UserProfileDto
 import me.kofesst.android.shoppinglist.data.models.done.DoneShoppingListDto
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
+import me.kofesst.android.shoppinglist.domain.models.UserProfile
 import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
@@ -81,6 +82,18 @@ class ShoppingListRepositoryImpl(
         }
     }
 
+    override suspend fun getLoggedUserUid(): String? {
+        val auth = Firebase.auth
+        return auth.uid
+    }
+
+    override suspend fun getLoggedUserProfile(): UserProfile? {
+        val userUid = getLoggedUserUid() ?: return null
+        val userReference = database.getReference("$USERS_DB_PATH/${userUid}")
+        val profileDto = userReference.get().await().getValue<UserProfileDto>()
+        return profileDto?.toDomain()
+    }
+
     override suspend fun saveSession(email: String, password: String) {
         dataStore.edit { preferences ->
             preferences[EMAIL_SESSION_KEY] = email
@@ -135,7 +148,7 @@ class ShoppingListRepositoryImpl(
     override suspend fun completeList(list: DoneShoppingList) {
         val doneListDto = DoneShoppingListDto.fromDomain(
             list.copy(
-                completedAt = Date().time
+                doneAt = Date().time
             )
         )
         val doneListReference = database.getReference("$DONE_LISTS_DB_PATH/${list.id}")
@@ -143,5 +156,35 @@ class ShoppingListRepositoryImpl(
 
         val listReference = database.getReference("$LISTS_DB_PATH/${list.id}")
         listReference.setValue(null).await()
+    }
+
+    override suspend fun getSelfActiveLists(): List<ShoppingList> {
+        val userProfile = getLoggedUserProfile() ?: return emptyList()
+
+        val activeListsReference = database.getReference(LISTS_DB_PATH)
+        val activeListsSnapshot = activeListsReference.get().await()
+        val activeListsMap = activeListsSnapshot.getValue<Map<String, ShoppingListDto>>()
+            ?: emptyMap()
+        val ownedLists = activeListsMap.filter { entry ->
+            entry.value.authorUid == userProfile.uid
+        }.values
+        return ownedLists.map { dto ->
+            dto.toDomain(userProfile)
+        }
+    }
+
+    override suspend fun getSelfDoneLists(): List<DoneShoppingList> {
+        val userProfile = getLoggedUserProfile() ?: return emptyList()
+
+        val doneListsReference = database.getReference(DONE_LISTS_DB_PATH)
+        val doneListsSnapshot = doneListsReference.get().await()
+        val doneListsMap = doneListsSnapshot.getValue<Map<String, DoneShoppingListDto>>()
+            ?: emptyMap()
+        val ownedLists = doneListsMap.filter { entry ->
+            entry.value.authorUid == userProfile.uid
+        }.values
+        return ownedLists.map { dto ->
+            dto.toDomain(userProfile)
+        }
     }
 }
