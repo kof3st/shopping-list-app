@@ -17,7 +17,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.errorMessage
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateEditItemViewModel @Inject constructor(
+class NewListItemViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
     var formState by mutableStateOf(CreateEditItemState())

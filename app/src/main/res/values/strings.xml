@@ -49,4 +49,6 @@
     <string name="copy_list_id_action">Поделиться номером</string>
     <string name="share_list_title">Поделиться списком покупок</string>
     <string name="go_home_action">На главную</string>
+    <string name="list_sent_from">Отправлено от:</string>
+    <string name="query_list_id_is_empty_message">Вы не ввели номер списка!</string>
 </resources>
