@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.create_list.result
+package me.kofesst.android.shoppinglist.presentation.list.create.result
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon

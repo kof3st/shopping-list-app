@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.list_details
+package me.kofesst.android.shoppinglist.presentation.list.complete
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +13,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.LoadingState
 import javax.inject.Inject
 
 @HiltViewModel
-class ListDetailsViewModel @Inject constructor(
+class CompleteListViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
     private val _detailsState = mutableStateOf<LoadingState<DoneShoppingList>>(LoadingState.Idle())

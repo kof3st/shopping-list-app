@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.create_list.create_item
+package me.kofesst.android.shoppinglist.presentation.list.create.item
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -15,7 +15,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import kotlinx.coroutines.flow.Flow
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.create_list.NewListViewModel
+import me.kofesst.android.shoppinglist.presentation.list.create.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
@@ -94,8 +94,8 @@ class NewListItemScreen(
 
     @Composable
     private fun CreateEditItemForm(
-        formState: CreateEditItemState,
-        onFormAction: (CreateEditItemAction) -> Unit,
+        formState: NewItemFormState,
+        onFormAction: (NewItemFormAction) -> Unit,
         modifier: Modifier = Modifier
     ) {
         Column(
@@ -111,7 +111,7 @@ class NewListItemScreen(
                 errorMessage = formState.nameError,
                 onNameChange = {
                     onFormAction(
-                        CreateEditItemAction.NameChanged(it)
+                        NewItemFormAction.NameChanged(it)
                     )
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -121,14 +121,14 @@ class NewListItemScreen(
                 errorMessage = formState.amountError,
                 onAmountChange = {
                     onFormAction(
-                        CreateEditItemAction.AmountChanged(it)
+                        NewItemFormAction.AmountChanged(it)
                     )
                 }
             )
             SubmitItemButton(
                 onClick = {
                     onFormAction(
-                        CreateEditItemAction.Submit
+                        NewItemFormAction.Submit
                     )
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -184,13 +184,13 @@ class NewListItemScreen(
 
     @Composable
     private fun FormResultListener(
-        result: Flow<CreateEditItemResult>,
-        onSuccess: (CreateEditItemResult.Success) -> Unit = {}
+        result: Flow<NewItemFormResult>,
+        onSuccess: (NewItemFormResult.Success) -> Unit = {}
     ) {
         LaunchedEffect(Unit) {
             result.collect {
                 when (it) {
-                    is CreateEditItemResult.Success -> {
+                    is NewItemFormResult.Success -> {
                         onSuccess(it)
                     }
                 }

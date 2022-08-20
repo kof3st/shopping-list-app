@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.create_list.create_item
+package me.kofesst.android.shoppinglist.presentation.list.create.item
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,27 +20,27 @@ import javax.inject.Inject
 class NewListItemViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
-    var formState by mutableStateOf(CreateEditItemState())
+    var formState by mutableStateOf(NewItemFormState())
 
-    private val validationChannel = Channel<CreateEditItemResult>()
+    private val validationChannel = Channel<NewItemFormResult>()
     val formResult = validationChannel.receiveAsFlow()
 
     fun setEditing(item: ShoppingItem) {
-        formState = CreateEditItemState(
+        formState = NewItemFormState(
             name = item.name,
             amount = item.amount
         )
     }
 
-    fun onFormAction(action: CreateEditItemAction) {
+    fun onFormAction(action: NewItemFormAction) {
         when (action) {
-            is CreateEditItemAction.NameChanged -> {
+            is NewItemFormAction.NameChanged -> {
                 formState = formState.copy(name = action.name)
             }
-            is CreateEditItemAction.AmountChanged -> {
+            is NewItemFormAction.AmountChanged -> {
                 formState = formState.copy(amount = action.amount)
             }
-            CreateEditItemAction.Submit -> {
+            NewItemFormAction.Submit -> {
                 onSubmit()
             }
         }
@@ -84,7 +84,7 @@ class NewListItemViewModel @Inject constructor(
                     amount = formState.amount!!
                 )
                 validationChannel.send(
-                    CreateEditItemResult.Success(item)
+                    NewItemFormResult.Success(item)
                 )
             }
         }

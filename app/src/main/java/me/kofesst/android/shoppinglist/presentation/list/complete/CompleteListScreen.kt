@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.list_details
+package me.kofesst.android.shoppinglist.presentation.list.complete
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -25,9 +25,9 @@ import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
-class ListDetailsScreen(
+class CompleteListScreen(
     routeName: String
-) : Screen<ListDetailsViewModel>(
+) : Screen<CompleteListViewModel>(
     routeName = routeName,
     topBarSettings = TopBarSettings(
         visible = true,
@@ -36,7 +36,7 @@ class ListDetailsScreen(
     ),
     args = listOf(
         navArgument(
-            name = ScreenConstants.ListDetails.LIST_ID_ARG_NAME
+            name = ScreenConstants.CompleteList.LIST_ID_ARG_NAME
         ) {
             type = NavType.StringType
             defaultValue = ""
@@ -44,14 +44,14 @@ class ListDetailsScreen(
     )
 ) {
     override val viewModelProducer:
-            @Composable (NavHostController, NavBackStackEntry) -> ListDetailsViewModel
+            @Composable (NavHostController, NavBackStackEntry) -> CompleteListViewModel
         get() = { _, _ -> hiltViewModel() }
 
     override val content:
-            @Composable BoxScope.(NavBackStackEntry, ListDetailsViewModel, Modifier) -> Unit
+            @Composable BoxScope.(NavBackStackEntry, CompleteListViewModel, Modifier) -> Unit
         get() = { backStack, viewModel, modifier ->
             val listId = getStringArg(
-                name = ScreenConstants.ListDetails.LIST_ID_ARG_NAME,
+                name = ScreenConstants.CompleteList.LIST_ID_ARG_NAME,
                 backStackEntry = backStack
             )
             LaunchedEffect(Unit) {

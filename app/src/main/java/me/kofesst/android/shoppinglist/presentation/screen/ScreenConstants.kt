@@ -13,9 +13,9 @@ sealed class ScreenConstants {
         }
     }
 
-    class ListDetails private constructor() {
+    class CompleteList private constructor() {
         companion object {
-            const val ROUTE_NAME = "list"
+            const val ROUTE_NAME = "completeList"
             const val LIST_ID_ARG_NAME = "id"
         }
     }

@@ -10,11 +10,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.auth.AuthScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.create_item.NewListItemScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.result.NewListResultScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.NewListScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.item.NewListItemScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.result.NewListResultScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
-import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
+import me.kofesst.android.shoppinglist.presentation.list.complete.CompleteListScreen
 import me.kofesst.android.shoppinglist.presentation.lists.ListsScreen
 
 abstract class Screen<ScreenViewModel : ViewModel>(
@@ -26,7 +26,7 @@ abstract class Screen<ScreenViewModel : ViewModel>(
     companion object {
         val Auth = AuthScreen(ScreenConstants.Auth.ROUTE_NAME)
         val Home = HomeScreen(ScreenConstants.Home.ROUTE_NAME)
-        val ListDetails = ListDetailsScreen(ScreenConstants.ListDetails.ROUTE_NAME)
+        val CompleteList = CompleteListScreen(ScreenConstants.CompleteList.ROUTE_NAME)
         val NewList = NewListScreen(ScreenConstants.NewList.ROUTE_NAME)
         val NewListItem = NewListItemScreen(ScreenConstants.NewListItem.ROUTE_NAME)
         val NewListResult = NewListResultScreen(ScreenConstants.NewListResult.ROUTE_NAME)
@@ -35,7 +35,7 @@ abstract class Screen<ScreenViewModel : ViewModel>(
         val values = listOf(
             Auth,
             Home,
-            ListDetails,
+            CompleteList,
             NewList,
             NewListItem,
             NewListResult,

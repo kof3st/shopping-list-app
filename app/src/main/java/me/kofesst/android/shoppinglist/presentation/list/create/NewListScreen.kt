@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.create_list
+package me.kofesst.android.shoppinglist.presentation.list.create
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.FloatingActionButton

@@ -95,8 +95,8 @@ class HomeScreen(
                         )
                     } else {
                         appState.navController.navigate(
-                            route = ListDetails.withArgs(
-                                ScreenConstants.ListDetails.LIST_ID_ARG_NAME to query
+                            route = CompleteList.withArgs(
+                                ScreenConstants.CompleteList.LIST_ID_ARG_NAME to query
                             )
                         )
                     }
