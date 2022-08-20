@@ -1,6 +1,5 @@
 package me.kofesst.android.shoppinglist.presentation
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -91,11 +90,7 @@ private fun TopBar(
     state: TopBarState,
     navController: NavController
 ) {
-    AnimatedVisibility(
-        visible = state.visible,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
-    ) {
+    if (state.visible) {
         TopAppBar(
             title = {
                 Text(
@@ -140,11 +135,7 @@ private fun BottomBar(
     val bottomBarScreens = Screen.values.filter { screen ->
         screen.bottomBarSettings.visible
     }
-    AnimatedVisibility(
-        visible = state.visible,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
-    ) {
+    if (state.visible) {
         BottomAppBar(
             elevation = 5.dp,
             modifier = Modifier.fillMaxWidth()
