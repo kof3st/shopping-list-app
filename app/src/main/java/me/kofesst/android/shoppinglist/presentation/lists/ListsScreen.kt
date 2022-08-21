@@ -23,9 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
-import me.kofesst.android.shoppinglist.presentation.screen.BottomBarSettings
-import me.kofesst.android.shoppinglist.presentation.screen.Screen
-import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
+import me.kofesst.android.shoppinglist.presentation.LocalAppState
+import me.kofesst.android.shoppinglist.presentation.screen.*
 import me.kofesst.android.shoppinglist.presentation.utils.activeListsSectionText
 import me.kofesst.android.shoppinglist.presentation.utils.doneListsSectionText
 import me.kofesst.android.shoppinglist.presentation.utils.emptyListsSectionText
@@ -60,13 +59,21 @@ class ListsScreen(
                 viewModel.loadLists()
             }
 
+            val appState = LocalAppState.current
             val lists by viewModel.lists
             LoadingStateHandler(
                 state = lists,
                 content = { userLists ->
                     ListsContent(
                         lists = userLists,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onItemClick = { list ->
+                            appState.navController.navigate(
+                                route = ListDetails.withArgs(
+                                    ScreenConstants.ListDetails.LIST_ID_ARG_NAME to list.id
+                                )
+                            )
+                        }
                     )
                 },
                 modifier = modifier.fillMaxWidth()
@@ -77,6 +84,7 @@ class ListsScreen(
     @Composable
     private fun ListsContent(
         lists: List<ShoppingList>,
+        onItemClick: (ShoppingList) -> Unit,
         modifier: Modifier = Modifier,
         contentPadding: Dp = 20.dp,
         contentSpacing: Dp = 16.dp
@@ -98,7 +106,8 @@ class ListsScreen(
                 items(activeLists) { activeList ->
                     ShoppingListItem(
                         list = activeList,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { onItemClick(activeList) }
                     )
                 }
             } else {
@@ -115,7 +124,8 @@ class ListsScreen(
                 items(doneLists) { doneList ->
                     ShoppingListItem(
                         list = doneList,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { onItemClick(doneList) }
                     )
                 }
             } else {

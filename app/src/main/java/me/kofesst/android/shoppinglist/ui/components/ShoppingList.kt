@@ -19,14 +19,17 @@ import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.utils.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ShoppingListItem(
     list: ShoppingList,
     modifier: Modifier = Modifier,
     elevation: Dp = 10.dp,
-    padding: Dp = 20.dp
+    padding: Dp = 20.dp,
+    onClick: () -> Unit = {}
 ) {
     Card(
+        onClick = onClick,
         elevation = elevation,
         modifier = modifier
     ) {

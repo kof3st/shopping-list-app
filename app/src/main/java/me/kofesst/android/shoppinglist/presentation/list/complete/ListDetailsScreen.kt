@@ -25,9 +25,9 @@ import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.EditingShoppingListColumn
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
 
-class CompleteListScreen(
+class ListDetailsScreen(
     routeName: String
-) : Screen<CompleteListViewModel>(
+) : Screen<ListDetailsViewModel>(
     routeName = routeName,
     topBarSettings = TopBarSettings(
         visible = true,
@@ -36,7 +36,7 @@ class CompleteListScreen(
     ),
     args = listOf(
         navArgument(
-            name = ScreenConstants.CompleteList.LIST_ID_ARG_NAME
+            name = ScreenConstants.ListDetails.LIST_ID_ARG_NAME
         ) {
             type = NavType.StringType
             defaultValue = ""
@@ -44,14 +44,14 @@ class CompleteListScreen(
     )
 ) {
     override val viewModelProducer:
-            @Composable (NavHostController, NavBackStackEntry) -> CompleteListViewModel
+            @Composable (NavHostController, NavBackStackEntry) -> ListDetailsViewModel
         get() = { _, _ -> hiltViewModel() }
 
     override val content:
-            @Composable BoxScope.(NavBackStackEntry, CompleteListViewModel, Modifier) -> Unit
+            @Composable BoxScope.(NavBackStackEntry, ListDetailsViewModel, Modifier) -> Unit
         get() = { backStack, viewModel, modifier ->
             val listId = getStringArg(
-                name = ScreenConstants.CompleteList.LIST_ID_ARG_NAME,
+                name = ScreenConstants.ListDetails.LIST_ID_ARG_NAME,
                 backStackEntry = backStack
             )
             LaunchedEffect(Unit) {
@@ -66,7 +66,7 @@ class CompleteListScreen(
                 errorMessageProducer = { getDetailsStateErrorMessage(it) },
                 content = { details ->
                     ListDetailsContent(
-                        details = details,
+                        list = details,
                         onCompleteClick = {
                             confirmDialogState = true
                         },
@@ -95,29 +95,34 @@ class CompleteListScreen(
 
     @Composable
     private fun ListDetailsContent(
-        details: ShoppingList,
+        list: ShoppingList,
         onCompleteClick: () -> Unit,
         modifier: Modifier = Modifier,
         fabModifier: Modifier = Modifier
     ) {
+        val isShowOnly = list.done
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
             modifier = modifier
         ) {
             ListAuthorPanel(
-                author = details.author.fullName,
-                modifier = Modifier.fillMaxWidth()
+                author = list.author.fullName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
             )
             EditingShoppingListColumn(
-                items = details.items,
-                modifier = modifier
+                items = list.items,
+                modifier = Modifier.fillMaxWidth()
             )
         }
-        CompleteListButton(
-            onClick = onCompleteClick,
-            modifier = fabModifier
-        )
+        if (!isShowOnly) {
+            CompleteListButton(
+                onClick = onCompleteClick,
+                modifier = fabModifier
+            )
+        }
     }
 
     @Composable

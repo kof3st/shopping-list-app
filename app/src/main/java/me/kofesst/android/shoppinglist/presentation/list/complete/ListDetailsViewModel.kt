@@ -12,7 +12,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.LoadingState
 import javax.inject.Inject
 
 @HiltViewModel
-class CompleteListViewModel @Inject constructor(
+class ListDetailsViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
     private val _detailsState = mutableStateOf<LoadingState<ShoppingList>>(LoadingState.Idle())
