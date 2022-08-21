@@ -23,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.presentation.screen.BottomBarSettings
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
@@ -32,7 +31,6 @@ import me.kofesst.android.shoppinglist.presentation.utils.doneListsSectionText
 import me.kofesst.android.shoppinglist.presentation.utils.emptyListsSectionText
 import me.kofesst.android.shoppinglist.presentation.utils.listsScreenTitle
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
-import me.kofesst.android.shoppinglist.ui.components.DoneShoppingListItem
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListItem
 
@@ -67,8 +65,7 @@ class ListsScreen(
                 state = lists,
                 content = { userLists ->
                     ListsContent(
-                        activeLists = userLists.first,
-                        doneLists = userLists.second,
+                        lists = userLists,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -79,12 +76,13 @@ class ListsScreen(
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun ListsContent(
-        activeLists: List<ShoppingList>,
-        doneLists: List<DoneShoppingList>,
+        lists: List<ShoppingList>,
         modifier: Modifier = Modifier,
         contentPadding: Dp = 20.dp,
         contentSpacing: Dp = 16.dp
     ) {
+        val activeLists = lists.filter { !it.done }
+        val doneLists = lists.filter { it.done }
         LazyColumn(
             contentPadding = PaddingValues(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,7 +97,7 @@ class ListsScreen(
             if (activeLists.isNotEmpty()) {
                 items(activeLists) { activeList ->
                     ShoppingListItem(
-                        shoppingList = activeList,
+                        list = activeList,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -115,8 +113,8 @@ class ListsScreen(
             }
             if (doneLists.isNotEmpty()) {
                 items(doneLists) { doneList ->
-                    DoneShoppingListItem(
-                        shoppingList = doneList,
+                    ShoppingListItem(
+                        list = doneList,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

@@ -2,7 +2,6 @@ package me.kofesst.android.shoppinglist.domain.repository
 
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.models.UserProfile
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 
 interface ShoppingListRepository {
@@ -31,8 +30,7 @@ interface ShoppingListRepository {
 
     suspend fun saveList(list: ShoppingList)
     suspend fun getList(id: String): ShoppingList?
-    suspend fun completeList(list: DoneShoppingList)
+    suspend fun completeList(list: ShoppingList)
 
-    suspend fun getSelfActiveLists(): List<ShoppingList>
-    suspend fun getSelfDoneLists(): List<DoneShoppingList>
+    suspend fun getOwnedLists(): List<ShoppingList>
 }

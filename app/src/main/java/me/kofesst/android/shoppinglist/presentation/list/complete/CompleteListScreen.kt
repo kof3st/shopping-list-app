@@ -15,15 +15,15 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
+import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
+import me.kofesst.android.shoppinglist.ui.components.EditingShoppingListColumn
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
-import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
 class CompleteListScreen(
     routeName: String
@@ -95,7 +95,7 @@ class CompleteListScreen(
 
     @Composable
     private fun ListDetailsContent(
-        details: DoneShoppingList,
+        details: ShoppingList,
         onCompleteClick: () -> Unit,
         modifier: Modifier = Modifier,
         fabModifier: Modifier = Modifier
@@ -109,7 +109,7 @@ class CompleteListScreen(
                 author = details.author.fullName,
                 modifier = Modifier.fillMaxWidth()
             )
-            ShoppingListColumn(
+            EditingShoppingListColumn(
                 items = details.items,
                 modifier = modifier
             )
