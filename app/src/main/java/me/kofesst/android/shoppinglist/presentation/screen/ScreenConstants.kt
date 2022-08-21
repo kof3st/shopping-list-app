@@ -15,27 +15,27 @@ sealed class ScreenConstants {
 
     class ListDetails private constructor() {
         companion object {
-            const val ROUTE_NAME = "completeList"
+            const val ROUTE_NAME = "list"
             const val LIST_ID_ARG_NAME = "id"
         }
     }
 
     class NewList private constructor() {
         companion object {
-            const val ROUTE_NAME = "createList"
+            const val ROUTE_NAME = "list/new"
         }
     }
 
     class NewListItem private constructor() {
         companion object {
-            const val ROUTE_NAME = "addListItem"
-            const val ITEM_INDEX_ARG_NAME = "itemIndex"
+            const val ROUTE_NAME = "list/new/item"
+            const val ITEM_INDEX_ARG_NAME = "index"
         }
     }
 
     class NewListResult private constructor() {
         companion object {
-            const val ROUTE_NAME = "listResult"
+            const val ROUTE_NAME = "list/new/result"
             const val LIST_ID_ARG_NAME = "id"
         }
     }
