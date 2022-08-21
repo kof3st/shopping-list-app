@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Shopping List</string>
+    <string name="error__empty_field">This is required!</string>
+    <string name="error__invalid_int">Need an integer!</string>
+    <string name="error__not_in_range">Need a number from %d to %d!</string>
+    <string name="error__long_length">Maximum length is %d characters!</string>
+    <string name="error__small_length">Minimum length is %d characters!</string>
+    <string name="shopping_list_id_label">Enter shopping list number</string>
+    <string name="search_shopping_list">Open shopping list details</string>
+    <string name="create_new_list">Create new shopping list</string>
+    <string name="other_action">Or</string>
+    <string name="home_screen_title">Home</string>
+    <string name="add_item">Add item</string>
+    <string name="submit_list">Save</string>
+    <string name="new_list_screen_title">New shopping list</string>
+    <string name="empty_list_message">
+        Shopping list is empty!\n
+        Click on + to add an item
+    </string>
+    <string name="list_id_copied_message">Shopping list number copied to your clipboard!</string>
+    <string name="submit_item">Save</string>
+    <string name="create_edit_item_screen_title">Edit item</string>
+    <string name="item_name_label">Enter description</string>
+    <string name="item_amount_label">Enter amount</string>
+    <string name="cannot_save_empty_list_message">Cannot save an empty list!</string>
+    <string name="null_list_message">It seems shopping list with that number does not exist…</string>
+    <string name="list_details_screen_title">Shopping List</string>
+    <string name="confirm_dialog_title">Action confirmation</string>
+    <string name="confirm_dialog_message">
+        After confirmation, this shopping list will no longer be available. Continue?
+    </string>
+    <string name="confirm_dialog_dismiss">Cancel</string>
+    <string name="confirm_dialog_accept">Continue</string>
+    <string name="email_label">Enter email</string>
+    <string name="password_label">Enter password</string>
+    <string name="first_name_label">Enter firstname</string>
+    <string name="last_name_label">Enter lastname</string>
+    <string name="log_in">Sign in</string>
+    <string name="register">Sign up</string>
+    <string name="register_action">Don\'t have a profile yet?</string>
+    <string name="log_in_action">Already have a profile?</string>
+    <string name="error__invalid_email">Invalid email!</string>
+    <string name="error__password_contains_space">Password must not have whitespaces!</string>
+    <string name="error__password_need_digit">Password must have at least one digit!</string>
+    <string name="error__password_need_letter">Password must have at least one character!</string>
+    <string name="error__email_already_exists">That email is already in use!</string>
+    <string name="error__incorrect_password">Incorrect password!</string>
+    <string name="error__invalid_user">Cannot load profile</string>
+    <string name="clear_session">Sign out</string>
+    <string name="list_created">Shopping list successfully created!</string>
+    <string name="copy_list_id_action">Share shopping list number</string>
+    <string name="share_list_title">Share shopping list number</string>
+    <string name="go_home_action">Go to home</string>
+    <string name="list_sent_from">Sent from:</string>
+    <string name="query_list_id_is_empty_message">You didn\'t enter list number!</string>
+    <string name="active_lists_section">Active shopping lists</string>
+    <string name="done_lists_section">Done shopping lists</string>
+    <string name="active_list">Active list</string>
+    <string name="done_list">Done list</string>
+    <string name="list_items">Items count: </string>
+    <string name="list_done_by">Done by: </string>
+    <string name="list_done_at">Done at </string>
+    <string name="hours_first_case">%d hour</string>
+    <string name="hours_second_case">%d hours</string>
+    <string name="hours_third_case">%d hours</string>
+    <string name="time_format">%s at %s:%s</string>
+    <string name="date_format">%d %s %d</string>
+    <string name="january_case">jan</string>
+    <string name="february_case">feb</string>
+    <string name="march_case">mar</string>
+    <string name="april_case">apr</string>
+    <string name="may_case">may</string>
+    <string name="june_case">jun</string>
+    <string name="july_case">jul</string>
+    <string name="august_case">aug</string>
+    <string name="september_case">sep</string>
+    <string name="october_case">oct</string>
+    <string name="november_case">nov</string>
+    <string name="december_case">dec</string>
+    <string name="lists_screen_title">Lists</string>
+    <string name="empty_lists_section">There\'s nothing here!</string>
+</resources>
