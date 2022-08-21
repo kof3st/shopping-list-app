@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.list_details
+package me.kofesst.android.shoppinglist.presentation.list.complete
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,15 +15,15 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
+import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
+import me.kofesst.android.shoppinglist.ui.components.EditingShoppingListColumn
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
-import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
 class ListDetailsScreen(
     routeName: String
@@ -66,7 +66,7 @@ class ListDetailsScreen(
                 errorMessageProducer = { getDetailsStateErrorMessage(it) },
                 content = { details ->
                     ListDetailsContent(
-                        details = details,
+                        list = details,
                         onCompleteClick = {
                             confirmDialogState = true
                         },
@@ -95,29 +95,34 @@ class ListDetailsScreen(
 
     @Composable
     private fun ListDetailsContent(
-        details: DoneShoppingList,
+        list: ShoppingList,
         onCompleteClick: () -> Unit,
         modifier: Modifier = Modifier,
         fabModifier: Modifier = Modifier
     ) {
+        val isShowOnly = list.done
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
             modifier = modifier
         ) {
             ListAuthorPanel(
-                author = details.author.fullName,
+                author = list.author.fullName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            )
+            EditingShoppingListColumn(
+                items = list.items,
                 modifier = Modifier.fillMaxWidth()
             )
-            ShoppingListColumn(
-                items = details.items,
-                modifier = modifier
+        }
+        if (!isShowOnly) {
+            CompleteListButton(
+                onClick = onCompleteClick,
+                modifier = fabModifier
             )
         }
-        CompleteListButton(
-            onClick = onCompleteClick,
-            modifier = fabModifier
-        )
     }
 
     @Composable

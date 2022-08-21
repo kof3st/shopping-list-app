@@ -17,47 +17,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingItem
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
 import me.kofesst.android.shoppinglist.presentation.utils.*
 
-@Composable
-fun DoneShoppingListItem(
-    shoppingList: DoneShoppingList,
-    modifier: Modifier = Modifier
-) {
-    ShoppingListItem(
-        title = doneListText.asString(),
-        itemsCount = shoppingList.items.size,
-        doneBy = shoppingList.doneBy,
-        doneAt = shoppingList.doneAt,
-        modifier = modifier
-    )
-}
-
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ShoppingListItem(
-    shoppingList: ShoppingList,
-    modifier: Modifier = Modifier
-) {
-    ShoppingListItem(
-        title = activeListText.asString(),
-        itemsCount = shoppingList.items.size,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun ShoppingListItem(
-    title: String,
-    itemsCount: Int,
+    list: ShoppingList,
     modifier: Modifier = Modifier,
-    doneBy: String? = null,
-    doneAt: Long? = null,
     elevation: Dp = 10.dp,
-    padding: Dp = 20.dp
+    padding: Dp = 20.dp,
+    onClick: () -> Unit = {}
 ) {
     Card(
+        onClick = onClick,
         elevation = elevation,
         modifier = modifier
     ) {
@@ -69,7 +41,11 @@ private fun ShoppingListItem(
                 .padding(padding)
         ) {
             Text(
-                text = title,
+                text = (if (list.done) {
+                    doneListText
+                } else {
+                    activeListText
+                }).asString(),
                 style = MaterialTheme.typography.body1,
                 fontWeight = FontWeight.Bold
             )
@@ -82,12 +58,12 @@ private fun ShoppingListItem(
                             fontWeight = FontWeight.Bold
                         )
                     ) {
-                        append("$itemsCount шт.")
+                        append("${list.items.size} шт.")
                     }
                 },
                 style = MaterialTheme.typography.body2
             )
-            if (doneBy != null) {
+            if (list.done) {
                 Text(
                     text = buildAnnotatedString {
                         append(listDoneByText.asString())
@@ -97,13 +73,11 @@ private fun ShoppingListItem(
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append(doneBy)
+                            append(list.doneBy)
                         }
                     },
                     style = MaterialTheme.typography.body2
                 )
-            }
-            if (doneAt != null) {
                 Text(
                     text = buildAnnotatedString {
                         append(listDoneAtText.asString())
@@ -114,7 +88,7 @@ private fun ShoppingListItem(
                             )
                         ) {
                             append(
-                                doneAt.formatDate(
+                                list.doneAt.formatDate(
                                     showTime = true
                                 )
                             )
@@ -128,8 +102,8 @@ private fun ShoppingListItem(
 }
 
 @Composable
-fun ShoppingListColumn(
-    items: List<DoneShoppingItem>,
+fun EditingShoppingListColumn(
+    items: List<ShoppingItem>,
     modifier: Modifier = Modifier,
     horizontalPadding: Dp = 10.dp,
     verticalSpace: Dp = 10.dp
@@ -137,17 +111,9 @@ fun ShoppingListColumn(
     ShoppingListContent(
         items = items.map { item ->
             { modifier ->
-                var completed by remember {
-                    mutableStateOf(item.completed)
-                }
-                ShoppingItem(
+                EditingShoppingItem(
                     item = item,
-                    completed = completed,
-                    modifier = modifier,
-                    onComplete = {
-                        completed = it
-                        item.completed = it
-                    }
+                    modifier = modifier
                 )
             }
         },
@@ -211,12 +177,13 @@ fun ShoppingListContent(
 }
 
 @Composable
-private fun ShoppingItem(
-    item: DoneShoppingItem,
-    modifier: Modifier = Modifier,
-    completed: Boolean = false,
-    onComplete: (Boolean) -> Unit = {}
+private fun EditingShoppingItem(
+    item: ShoppingItem,
+    modifier: Modifier = Modifier
 ) {
+    var checked by remember {
+        mutableStateOf(item.checked)
+    }
     Card(
         modifier = modifier
     ) {
@@ -233,9 +200,11 @@ private fun ShoppingItem(
                 modifier = Modifier.weight(1.0f)
             )
             Checkbox(
-                checked = completed,
+                enabled = !item.done,
+                checked = checked,
                 onCheckedChange = {
-                    onComplete(it)
+                    checked = it
+                    item.checked = it
                 }
             )
         }

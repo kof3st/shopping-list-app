@@ -19,9 +19,7 @@ class UseCases(
     val saveList: SaveList = SaveList(repository),
     val getList: GetList = GetList(repository),
     val completeList: CompleteList = CompleteList(repository),
-
-    val getSelfActiveLists: GetSelfActiveLists = GetSelfActiveLists(repository),
-    val getSelfDoneLists: GetSelfDoneLists = GetSelfDoneLists(repository),
+    val getOwnedLists: GetOwnedLists = GetOwnedLists(repository),
 
     val validateForNotNull: ValidateForNotNull = ValidateForNotNull(),
     val validateForEmptyField: ValidateForEmptyField = ValidateForEmptyField(),

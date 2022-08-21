@@ -1,8 +1,8 @@
-package me.kofesst.android.shoppinglist.presentation.create_list.create_item
+package me.kofesst.android.shoppinglist.presentation.list.create.item
 
 import me.kofesst.android.shoppinglist.presentation.utils.UiText
 
-data class CreateEditItemState(
+data class NewItemFormState(
     val name: String = "",
     val nameError: UiText? = null,
     val amount: Int? = 1,

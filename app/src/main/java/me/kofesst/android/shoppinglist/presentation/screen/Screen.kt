@@ -10,11 +10,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.auth.AuthScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.NewListScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.create_item.NewListItemScreen
-import me.kofesst.android.shoppinglist.presentation.create_list.result.NewListResultScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.NewListScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.item.NewListItemScreen
+import me.kofesst.android.shoppinglist.presentation.list.create.result.NewListResultScreen
 import me.kofesst.android.shoppinglist.presentation.home.HomeScreen
-import me.kofesst.android.shoppinglist.presentation.list_details.ListDetailsScreen
+import me.kofesst.android.shoppinglist.presentation.list.complete.ListDetailsScreen
 import me.kofesst.android.shoppinglist.presentation.lists.ListsScreen
 
 abstract class Screen<ScreenViewModel : ViewModel>(

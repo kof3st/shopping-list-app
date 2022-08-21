@@ -1,4 +1,4 @@
-package me.kofesst.android.shoppinglist.presentation.list_details
+package me.kofesst.android.shoppinglist.presentation.list.complete
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingItem
-import me.kofesst.android.shoppinglist.domain.models.done.DoneShoppingList
+import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.usecases.UseCases
 import me.kofesst.android.shoppinglist.presentation.utils.LoadingState
 import javax.inject.Inject
@@ -16,29 +15,15 @@ import javax.inject.Inject
 class ListDetailsViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
-    private val _detailsState = mutableStateOf<LoadingState<DoneShoppingList>>(LoadingState.Idle())
-    val detailsState: State<LoadingState<DoneShoppingList>> = _detailsState
+    private val _detailsState = mutableStateOf<LoadingState<ShoppingList>>(LoadingState.Idle())
+    val detailsState: State<LoadingState<ShoppingList>> = _detailsState
 
     fun loadDetails(listId: String) {
         viewModelScope.launch {
             _detailsState.value = LoadingState.Loading()
             try {
                 _detailsState.value = LoadingState.Loaded(
-                    useCases.getList(listId).run {
-                        if (this == null) {
-                            null
-                        } else {
-                            val doneBy = useCases.getLoggedUserProfile()?.fullName ?: ""
-                            DoneShoppingList.fromList(
-                                this,
-                                items = this.items.map {
-                                    DoneShoppingItem.fromDefault(it)
-                                },
-                                doneAt = 0,
-                                doneBy = doneBy
-                            )
-                        }
-                    }
+                    value = useCases.getList(listId)
                 )
             } catch (exception: Exception) {
                 _detailsState.value = LoadingState.Failed(exception)
