@@ -25,10 +25,7 @@ import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.*
-import me.kofesst.android.shoppinglist.presentation.utils.activeListsSectionText
-import me.kofesst.android.shoppinglist.presentation.utils.doneListsSectionText
-import me.kofesst.android.shoppinglist.presentation.utils.emptyListsSectionText
-import me.kofesst.android.shoppinglist.presentation.utils.listsScreenTitle
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListItem
@@ -40,12 +37,12 @@ class ListsScreen(
     routeName = routeName,
     topBarSettings = TopBarSettings(
         visible = true,
-        title = listsScreenTitle
+        title = AppText.Title.listsScreenTitle
     ),
     bottomBarSettings = BottomBarSettings(
         visible = true,
         icon = Icons.Outlined.Checklist,
-        title = listsScreenTitle
+        title = AppText.Title.listsScreenTitle
     )
 ) {
     override val viewModelProducer:
@@ -99,7 +96,7 @@ class ListsScreen(
         ) {
             stickyHeader {
                 DividerWithText(
-                    text = activeListsSectionText.asString()
+                    text = AppText.activeListsSectionText()
                 )
             }
             if (activeLists.isNotEmpty()) {
@@ -117,7 +114,7 @@ class ListsScreen(
             }
             stickyHeader {
                 DividerWithText(
-                    text = doneListsSectionText.asString()
+                    text = AppText.doneListsSectionText()
                 )
             }
             if (doneLists.isNotEmpty()) {
@@ -152,7 +149,7 @@ class ListsScreen(
                 modifier = Modifier.size(72.dp)
             )
             Text(
-                text = emptyListsSectionText.asString(),
+                text = AppText.emptyListsSectionText(),
                 style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center

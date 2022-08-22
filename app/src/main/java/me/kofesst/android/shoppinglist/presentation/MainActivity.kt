@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import dagger.hilt.android.AndroidEntryPoint
 import me.kofesst.android.shoppinglist.ui.theme.ShoppingListAppTheme
 
@@ -21,8 +25,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val viewModelOwner = compositionLocalOf<ViewModelStoreOwner> { this }
+                    hiltViewModel<MainViewModel>(
+                        viewModelStoreOwner = viewModelOwner.current
+                    )
                     val appState = rememberAppState()
-                    CompositionLocalProvider(LocalAppState provides appState) {
+                    CompositionLocalProvider(
+                        LocalAppState provides appState,
+                        LocalViewModelStoreOwner provides viewModelOwner.current
+                    ) {
                         ShoppingListApp()
                     }
                 }

@@ -18,6 +18,8 @@ import kotlinx.coroutines.tasks.await
 import me.kofesst.android.shoppinglist.data.BuildConfig
 import me.kofesst.android.shoppinglist.data.models.ShoppingListDto
 import me.kofesst.android.shoppinglist.data.models.UserProfileDto
+import me.kofesst.android.shoppinglist.data.repository.constants.RepositoryConstants.Companion.LISTS_DB_PATH
+import me.kofesst.android.shoppinglist.data.repository.constants.RepositoryConstants.Companion.USERS_DB_PATH
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.domain.models.UserProfile
 import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
@@ -28,9 +30,6 @@ class ShoppingListRepositoryImpl(
     private val dataStore: DataStore<Preferences>
 ) : ShoppingListRepository {
     companion object {
-        private const val USERS_DB_PATH = "users"
-        private const val LISTS_DB_PATH = "lists"
-
         private val EMAIL_SESSION_KEY = stringPreferencesKey("session_email")
         private val PASSWORD_SESSION_KEY = stringPreferencesKey("session_password")
     }

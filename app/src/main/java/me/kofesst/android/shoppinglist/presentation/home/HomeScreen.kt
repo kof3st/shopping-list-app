@@ -17,8 +17,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
+import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.*
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.activity
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
 import me.kofesst.android.shoppinglist.ui.components.TextFields
@@ -30,16 +32,21 @@ class HomeScreen(
     routeName = routeName,
     topBarSettings = TopBarSettings(
         visible = true,
-        title = homeScreenTitle,
+        title = AppText.Title.homeScreenTitle,
         actions = listOf(
             TopBarSettings.Action(
                 icon = Icons.Outlined.ExitToApp,
-                description = clearSessionText,
+                description = AppText.Action.clearSessionAction,
                 onClick = {
                     val viewModel = hiltViewModel<HomeViewModel>()
+                    val context = LocalContext.current
+                    val mainViewModel = hiltViewModel<MainViewModel>(
+                        viewModelStoreOwner = context.activity!!
+                    )
                     val appState = LocalAppState.current
-                    {
+                    return@Action {
                         viewModel.clearSession {
+                            mainViewModel.onSignOut()
                             appState.navController.navigate(
                                 route = Auth.routeName
                             ) {
@@ -56,7 +63,7 @@ class HomeScreen(
     bottomBarSettings = BottomBarSettings(
         visible = true,
         icon = Icons.Outlined.Home,
-        title = homeScreenTitle
+        title = AppText.Title.homeScreenTitle
     )
 ) {
     override val viewModelProducer:
@@ -89,9 +96,7 @@ class HomeScreen(
                 onSearch = { query ->
                     if (query.isBlank()) {
                         appState.showSnackbar(
-                            message = queryListIdIsEmptyMessage.asString(
-                                context = context
-                            )
+                            message = AppText.Toast.queryListIdIsEmptyToast(context = context)
                         )
                     } else {
                         appState.navController.navigate(
@@ -104,7 +109,7 @@ class HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             DividerWithText(
-                text = otherActionText.asString()
+                text = AppText.otherActionText()
             )
             CreateNewListButton(
                 onClick = {
@@ -136,13 +141,13 @@ class HomeScreen(
             TextFields.OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                label = shoppingListIdLabel.asString(),
+                label = AppText.Label.shoppingListIdLabel(),
                 textStyle = MaterialTheme.typography.body1,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             Buttons.Button(
-                text = searchShoppingListText.asString(),
+                text = AppText.Action.searchShoppingListAction(),
                 onClick = {
                     onSearch(query)
                     keyboardController?.hide()
@@ -158,7 +163,7 @@ class HomeScreen(
         modifier: Modifier = Modifier
     ) {
         Buttons.Button(
-            text = createNewListText.asString(),
+            text = AppText.Action.createNewListAction(),
             onClick = onClick,
             modifier = modifier
         )

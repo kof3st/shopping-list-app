@@ -39,40 +39,33 @@ class TextFields private constructor() {
             var passwordVisible by remember {
                 mutableStateOf(false)
             }
-
-            Column(modifier = modifier) {
-                OutlinedTextField(
-                    value = value,
-                    onValueChange = { onValueChange(it) },
-                    isReadOnly = isReadOnly,
-                    errorMessage = errorMessage,
-                    label = label,
-                    leadingIcon = leadingIcon,
-                    singleLine = singleLine,
-                    textStyle = textStyle,
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = if (passwordVisible) {
-                        VisualTransformation.None
+            OutlinedTextField(
+                value = value,
+                onValueChange = { onValueChange(it) },
+                isReadOnly = isReadOnly,
+                errorMessage = errorMessage,
+                label = label,
+                leadingIcon = leadingIcon,
+                singleLine = singleLine,
+                textStyle = textStyle,
+                modifier = modifier,
+                visualTransformation = if (passwordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = rememberVectorPainter(
+                    if (passwordVisible) {
+                        Icons.Outlined.Visibility
                     } else {
-                        PasswordVisualTransformation()
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    trailingIcon = rememberVectorPainter(
-                        if (passwordVisible) {
-                            Icons.Outlined.Visibility
-                        } else {
-                            Icons.Outlined.VisibilityOff
-                        }
-                    ),
-                    onTrailingIconClick = {
-                        passwordVisible = !passwordVisible
+                        Icons.Outlined.VisibilityOff
                     }
-                )
-                TextFieldError(
-                    modifier = Modifier.fillMaxWidth(),
-                    message = errorMessage
-                )
-            }
+                ),
+                onTrailingIconClick = {
+                    passwordVisible = !passwordVisible
+                }
+            )
         }
 
         @Composable
@@ -89,34 +82,28 @@ class TextFields private constructor() {
             singleLine: Boolean = true,
             textStyle: TextStyle = MaterialTheme.typography.body1
         ) {
-            Column(modifier = modifier) {
-                OutlinedTextField(
-                    value = value?.toString() ?: "",
-                    onValueChange = {
-                        onValueChange(
-                            if (it.isBlank()) {
-                                null
-                            } else {
-                                it.toIntOrNull() ?: value
-                            }
-                        )
-                    },
-                    isReadOnly = isReadOnly,
-                    errorMessage = errorMessage,
-                    label = label,
-                    leadingIcon = leadingIcon,
-                    singleLine = singleLine,
-                    trailingIcon = trailingIcon,
-                    onTrailingIconClick = onTrailingIconClick,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    textStyle = textStyle,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                TextFieldError(
-                    modifier = Modifier.fillMaxWidth(),
-                    message = errorMessage
-                )
-            }
+            OutlinedTextField(
+                value = value?.toString() ?: "",
+                onValueChange = {
+                    onValueChange(
+                        if (it.isBlank()) {
+                            null
+                        } else {
+                            it.toIntOrNull() ?: value
+                        }
+                    )
+                },
+                isReadOnly = isReadOnly,
+                errorMessage = errorMessage,
+                label = label,
+                leadingIcon = leadingIcon,
+                singleLine = singleLine,
+                trailingIcon = trailingIcon,
+                onTrailingIconClick = onTrailingIconClick,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                textStyle = textStyle,
+                modifier = modifier
+            )
         }
 
         @OptIn(ExperimentalComposeUiApi::class)
@@ -137,7 +124,6 @@ class TextFields private constructor() {
             visualTransformation: VisualTransformation = VisualTransformation.None
         ) {
             val keyboardController = LocalSoftwareKeyboardController.current
-
             Column(modifier = modifier) {
                 OutlinedTextField(
                     value = value,

@@ -10,7 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import me.kofesst.android.shoppinglist.data.repository.NotificationsRepositoryImpl
 import me.kofesst.android.shoppinglist.data.repository.ShoppingListRepositoryImpl
+import me.kofesst.android.shoppinglist.domain.repository.NotificationsRepository
 import me.kofesst.android.shoppinglist.domain.repository.ShoppingListRepository
 import me.kofesst.android.shoppinglist.domain.usecases.UseCases
 import javax.inject.Singleton
@@ -32,6 +34,14 @@ object AppModule {
         return ShoppingListRepositoryImpl(
             dataStore = dataStore
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationsRepository(
+        mainRepository: ShoppingListRepository
+    ): NotificationsRepository {
+        return NotificationsRepositoryImpl(mainRepository)
     }
 
     @Provides

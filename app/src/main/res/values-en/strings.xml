@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Shopping List</string>
+
+    <string name="error__empty_field">This is required!</string>
+    <string name="error__invalid_int">Need an integer!</string>
+    <string name="error__not_in_range">Need a number from %d to %d!</string>
+    <string name="error__long_length">Maximum length is %d characters!</string>
+    <string name="error__small_length">Minimum length is %d characters!</string>
+    <string name="error__password_contains_space">Password must not have whitespaces!</string>
+    <string name="error__password_need_digit">Password must have at least one digit!</string>
+    <string name="error__password_need_letter">Password must have at least one character!</string>
+    <string name="error__email_already_exists">That email is already in use!</string>
+    <string name="error__incorrect_password">Incorrect password!</string>
+    <string name="error__invalid_user">Cannot load profile</string>
+    <string name="error__invalid_email">Invalid email!</string>
+
+    <string name="title__auth_screen">Authorization</string>
+    <string name="title__home_screen">Home</string>
+    <string name="title__new_list_screen">New shopping list</string>
+    <string name="title__create_edit_item_screen">Edit item</string>
+    <string name="title__list_details_screen">Shopping List</string>
+    <string name="title__confirm_dialog">Action confirmation</string>
+    <string name="title__share_list">Share shopping list number</string>
+    <string name="title__lists_screen">Lists</string>
+
+    <string name="action__create_new_list">Create new shopping list</string>
+    <string name="action__add_item">Add item</string>
+    <string name="action__submit_list">Save</string>
+    <string name="action__submit_item">Save</string>
+    <string name="action__confirm_dialog_dismiss">Cancel</string>
+    <string name="action__confirm_dialog_accept">Continue</string>
+    <string name="action__sign_in">Sign in</string>
+    <string name="action__sign_up">Sign up</string>
+    <string name="action__clear_session">Sign out</string>
+    <string name="action__copy_list_id">Share shopping list number</string>
+    <string name="action__go_home">Go to home</string>
+    <string name="action__show_changed_list">Show</string>
+    <string name="action__search_shopping_list">Open shopping list details</string>
+
+    <string name="label__shopping_list_id">Enter shopping list number</string>
+    <string name="label__email">Enter email</string>
+    <string name="label__password">Enter password</string>
+    <string name="label__first_name">Enter firstname</string>
+    <string name="label__last_name">Enter lastname</string>
+    <string name="label__item_name">Enter description</string>
+    <string name="label__item_amount">Enter amount</string>
+
+    <string name="case__hours_first">%d hour</string>
+    <string name="case__hours_second">%d hours</string>
+    <string name="case__hours_third">%d hours</string>
+    <string name="case__january">jan</string>
+    <string name="case__february">feb</string>
+    <string name="case__march">mar</string>
+    <string name="case__april">apr</string>
+    <string name="case__may">may</string>
+    <string name="case__june">jun</string>
+    <string name="case__july">jul</string>
+    <string name="case__august">aug</string>
+    <string name="case__september">sep</string>
+    <string name="case__october">oct</string>
+    <string name="case__november">nov</string>
+    <string name="case__december">dec</string>
+
+    <string name="format__time">%s at %s:%s</string>
+    <string name="format__date">%d %s %d</string>
+
+    <string name="toast__list_id_copied">Shopping list number copied to your clipboard!</string>
+    <string name="toast__cannot_save_empty_list">Cannot save an empty list!</string>
+    <string name="toast__query_list_id_is_empty">You didn\'t enter list number!</string>
+    <string name="toast__list_changed">Your list is done!</string>
+
+    <string name="other_action">Or</string>
+    <string name="empty_list">
+        Shopping list is empty!\n
+        Click on + to add an item
+    </string>
+    <string name="null_list">
+        It seems shopping list with that number does not exist…
+    </string>
+    <string name="confirm_dialog_message">
+        After confirmation, this shopping list will no longer be available. Continue?
+    </string>
+    <string name="sign_up_action">Don\'t have a profile yet?</string>
+    <string name="sign_in_action">Already have a profile?</string>
+    <string name="list_created">Shopping list successfully created!</string>
+    <string name="list_sent_from">Sent from:</string>
+    <string name="active_lists_section">Active shopping lists</string>
+    <string name="done_lists_section">Done shopping lists</string>
+    <string name="active_list">Active list</string>
+    <string name="done_list">Done list</string>
+    <string name="list_items">Items count: </string>
+    <string name="list_done_by">Done by: </string>
+    <string name="list_done_at">Done at </string>
+    <string name="empty_lists_section">There\'s nothing here!</string>
+</resources>

@@ -3,6 +3,7 @@ package me.kofesst.android.shoppinglist.presentation.auth
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -18,8 +19,12 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.Flow
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
+import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.UiText
+import me.kofesst.android.shoppinglist.presentation.utils.activity
+import me.kofesst.android.shoppinglist.presentation.utils.errorMessage
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.LoadingHandler
 import me.kofesst.android.shoppinglist.ui.components.TextFields
@@ -40,9 +45,10 @@ class AuthScreen(
             LaunchedEffect(Unit) {
                 viewModel.tryRestoreSession()
             }
+
             val screenState = viewModel.screenState
             val formState = viewModel.formState
-            AuthForm(
+            AuthFormContent(
                 screenState = screenState,
                 onScreenStateToggle = {
                     viewModel.toggleScreenState()
@@ -51,19 +57,18 @@ class AuthScreen(
                 onFormAction = { action ->
                     viewModel.onFormAction(action)
                 },
-                modifier = modifier
-                    .align(Alignment.Center)
-                    .padding(20.dp)
-                    .animateContentSize()
+                modifier = modifier.fillMaxSize()
             )
-            LoadingHandler(
-                viewModel = viewModel
-            )
+
             val context = LocalContext.current
+            val mainViewModel = hiltViewModel<MainViewModel>(
+                viewModelStoreOwner = context.activity!!
+            )
             val appState = LocalAppState.current
             FormResultListener(
                 result = viewModel.formResult,
                 onSuccess = {
+                    mainViewModel.onSignIn()
                     appState.navController.navigate(
                         route = Home.routeName
                     ) {
@@ -74,75 +79,37 @@ class AuthScreen(
                 },
                 onFailed = {
                     appState.showSnackbar(
-                        message = it.errorMessage.asString(
-                            context = context
-                        )
+                        message = it.errorMessage(context = context)
                     )
                 }
+            )
+
+            LoadingHandler(
+                viewModel = viewModel
             )
         }
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    private fun AuthForm(
-        screenState: AuthScreenState,
-        onScreenStateToggle: () -> Unit,
+    private fun AuthFormContent(
         formState: AuthFormState,
         onFormAction: (AuthFormAction) -> Unit,
+        screenState: AuthScreenState,
+        onScreenStateToggle: () -> Unit,
         modifier: Modifier = Modifier,
-        contentSpacing: Dp = 7.dp,
-        formAndActionsSpacing: Dp = 10.dp
+        contentPadding: Dp = 30.dp
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                space = contentSpacing,
-                alignment = Alignment.CenterVertically
-            ),
-            modifier = modifier
+        Box(
+            modifier = modifier.padding(contentPadding)
         ) {
-            EmailField(
-                email = formState.email,
-                errorMessage = formState.emailError,
-                onEmailChange = {
-                    onFormAction(
-                        AuthFormAction.EmailChanged(it)
-                    )
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-            PasswordField(
-                password = formState.password,
-                errorMessage = formState.passwordError,
-                onPasswordChange = {
-                    onFormAction(
-                        AuthFormAction.PasswordChanged(it)
-                    )
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (screenState is AuthScreenState.Register) {
-                RegistrationFields(
-                    firstName = formState.firstName,
-                    firstNameError = formState.firstNameError,
-                    onFirstNameChange = {
-                        onFormAction(
-                            AuthFormAction.FirstNameChanged(it)
-                        )
-                    },
-                    lastName = formState.lastName,
-                    lastNameError = formState.lastNameError,
-                    onLastNameChange = {
-                        onFormAction(
-                            AuthFormAction.LastNameChanged(it)
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Spacer(
-                modifier = Modifier.height(formAndActionsSpacing)
+            AuthForm(
+                formState = formState,
+                onFormAction = onFormAction,
+                screenState = screenState,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
             )
             AuthFormActions(
                 screenState = screenState,
@@ -152,8 +119,110 @@ class AuthScreen(
                     onFormAction(
                         AuthFormAction.Submit
                     )
-                }
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
             )
+        }
+    }
+
+    @Composable
+    private fun AuthFormActions(
+        screenState: AuthScreenState,
+        onScreenStateToggle: () -> Unit,
+        onSubmit: () -> Unit,
+        modifier: Modifier = Modifier,
+        actionsSpacing: Dp = 20.dp
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier
+        ) {
+            AuthFormSubmitButton(
+                screenState = screenState,
+                onSubmit = onSubmit,
+                modifier = modifier
+            )
+            Spacer(
+                modifier = Modifier.height(actionsSpacing)
+            )
+            ToggleScreenStateAction(
+                screenState = screenState,
+                onScreenStateToggle = onScreenStateToggle,
+                modifier = modifier
+            )
+        }
+    }
+
+    @Composable
+    private fun AuthForm(
+        formState: AuthFormState,
+        onFormAction: (AuthFormAction) -> Unit,
+        screenState: AuthScreenState,
+        modifier: Modifier = Modifier,
+        headerPadding: Dp = 30.dp,
+        fieldsSpacing: Dp = 15.dp
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier.animateContentSize()
+        ) {
+            Text(
+                text = AppText.Title.authScreenTitle(),
+                style = MaterialTheme.typography.h4,
+                color = MaterialTheme.colors.primary
+            )
+            Spacer(
+                modifier = Modifier.height(headerPadding)
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(fieldsSpacing),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                EmailField(
+                    email = formState.email,
+                    errorMessage = formState.emailError,
+                    onEmailChange = {
+                        onFormAction(
+                            AuthFormAction.EmailChanged(it)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                PasswordField(
+                    password = formState.password,
+                    errorMessage = formState.passwordError,
+                    onPasswordChange = {
+                        onFormAction(
+                            AuthFormAction.PasswordChanged(it)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (screenState is AuthScreenState.Register) {
+                    RegistrationFields(
+                        firstName = formState.firstName,
+                        firstNameError = formState.firstNameError,
+                        onFirstNameChange = {
+                            onFormAction(
+                                AuthFormAction.FirstNameChanged(it)
+                            )
+                        },
+                        lastName = formState.lastName,
+                        lastNameError = formState.lastNameError,
+                        onLastNameChange = {
+                            onFormAction(
+                                AuthFormAction.LastNameChanged(it)
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 
@@ -167,9 +236,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = email,
             onValueChange = onEmailChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = emailLabel.asString(),
+            label = AppText.Label.emailLabel(),
             modifier = modifier
         )
     }
@@ -184,9 +253,9 @@ class AuthScreen(
         TextFields.OutlinedPasswordTextField(
             value = password,
             onValueChange = onPasswordChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = passwordLabel.asString(),
+            label = AppText.Label.passwordLabel(),
             modifier = modifier
         )
     }
@@ -225,9 +294,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = firstName,
             onValueChange = onFirstNameChange,
-            errorMessage = firstNameError?.asString(),
+            errorMessage = firstNameError?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = firstNameLabel.asString(),
+            label = AppText.Label.firstNameLabel(),
             modifier = modifier
         )
     }
@@ -242,28 +311,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = lastName,
             onValueChange = onLastNameChange,
-            errorMessage = lastNameError?.asString(),
+            errorMessage = lastNameError?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = lastNameLabel.asString(),
-            modifier = modifier
-        )
-    }
-
-    @Composable
-    private fun AuthFormActions(
-        screenState: AuthScreenState,
-        onScreenStateToggle: () -> Unit,
-        onSubmit: () -> Unit,
-        modifier: Modifier = Modifier
-    ) {
-        AuthFormSubmitButton(
-            screenState = screenState,
-            onSubmit = onSubmit,
-            modifier = modifier
-        )
-        ToggleScreenStateButton(
-            screenState = screenState,
-            onScreenStateToggle = onScreenStateToggle,
+            label = AppText.Label.lastNameLabel(),
             modifier = modifier
         )
     }
@@ -275,37 +325,53 @@ class AuthScreen(
         modifier: Modifier = Modifier
     ) {
         Buttons.Button(
-            text = (when (screenState) {
+            text = when (screenState) {
                 is AuthScreenState.LogIn -> {
-                    logInText
+                    AppText.Action.signInAction()
                 }
                 is AuthScreenState.Register -> {
-                    registerText
+                    AppText.Action.signUpAction()
                 }
-            }).asString(),
+            },
             onClick = onSubmit,
             modifier = modifier
         )
     }
 
     @Composable
-    private fun ToggleScreenStateButton(
+    private fun ToggleScreenStateAction(
         screenState: AuthScreenState,
         onScreenStateToggle: () -> Unit,
         modifier: Modifier = Modifier
     ) {
-        Buttons.TextButton(
-            text = (when (screenState) {
-                is AuthScreenState.LogIn -> {
-                    registerActionText
-                }
-                is AuthScreenState.Register -> {
-                    logInActionText
-                }
-            }).asString(),
-            modifier = modifier,
-            onClick = onScreenStateToggle
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier
+        ) {
+            Text(
+                text = when (screenState) {
+                    is AuthScreenState.LogIn -> {
+                        AppText.signInActionText()
+                    }
+                    is AuthScreenState.Register -> {
+                        AppText.signUpActionText()
+                    }
+                },
+                style = MaterialTheme.typography.body2
+            )
+            Buttons.TextButton(
+                text = when (screenState) {
+                    is AuthScreenState.LogIn -> {
+                        AppText.Action.signUpAction()
+                    }
+                    is AuthScreenState.Register -> {
+                        AppText.Action.signInAction()
+                    }
+                },
+                onClick = onScreenStateToggle
+            )
+        }
     }
 
     @Composable

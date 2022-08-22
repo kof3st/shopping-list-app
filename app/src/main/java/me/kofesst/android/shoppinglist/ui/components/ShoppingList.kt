@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.formatDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -41,17 +42,17 @@ fun ShoppingListItem(
                 .padding(padding)
         ) {
             Text(
-                text = (if (list.done) {
-                    doneListText
+                text = if (list.done) {
+                    AppText.doneListText()
                 } else {
-                    activeListText
-                }).asString(),
+                    AppText.activeListText()
+                },
                 style = MaterialTheme.typography.body1,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = buildAnnotatedString {
-                    append(listItemsText.asString())
+                    append(AppText.listItemsText())
                     append(" ")
                     withStyle(
                         style = SpanStyle(
@@ -66,7 +67,7 @@ fun ShoppingListItem(
             if (list.done) {
                 Text(
                     text = buildAnnotatedString {
-                        append(listDoneByText.asString())
+                        append(AppText.listDoneByText())
                         append(" ")
                         withStyle(
                             style = SpanStyle(
@@ -80,7 +81,7 @@ fun ShoppingListItem(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append(listDoneAtText.asString())
+                        append(AppText.listDoneAtText())
                         append(" ")
                         withStyle(
                             style = SpanStyle(

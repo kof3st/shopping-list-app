@@ -1,42 +1,11 @@
 <resources>
-    <string name="app_name">Shopping List</string>
+    <string name="app_name">Список покупок</string>
+
     <string name="error__empty_field">Необходимо заполнить!</string>
     <string name="error__invalid_int">Необходимо целое число!</string>
-    <string name="error__not_in_range">Нужно число от %d то %d!</string>
+    <string name="error__not_in_range">Нужно число от %d до %d!</string>
     <string name="error__long_length">Максимум %d симв.</string>
     <string name="error__small_length">Минимум %d симв.</string>
-    <string name="shopping_list_id_label">Введите номер списка покупок</string>
-    <string name="search_shopping_list">Открыть список покупок</string>
-    <string name="create_new_list">Создать новый список</string>
-    <string name="other_action">Или</string>
-    <string name="home_screen_title">Главная</string>
-    <string name="add_item">Добавить пункт</string>
-    <string name="submit_list">Сохранить</string>
-    <string name="new_list_screen_title">Новый список покупок</string>
-    <string name="empty_list_message">
-        Список покупок пуст!\n
-        Нажмите на +, чтобы добавить новый пункт
-    </string>
-    <string name="list_id_copied_message">Номер созданного списка покупок скопирован!</string>
-    <string name="submit_item">Сохранить</string>
-    <string name="create_edit_item_screen_title">Изменение пункта</string>
-    <string name="item_name_label">Введите описание</string>
-    <string name="item_amount_label">Введите количество штук</string>
-    <string name="cannot_save_empty_list_message">Нельзя сохранить пустой список!</string>
-    <string name="null_list_message">Кажется, списка покупок с данным номером не существует…</string>
-    <string name="list_details_screen_title">Список покупок</string>
-    <string name="confirm_dialog_title">Подтверждение действия</string>
-    <string name="confirm_dialog_message">После выполнения списка покупок он больше не будет доступен. Продолжить?</string>
-    <string name="confirm_dialog_dismiss">Отмена</string>
-    <string name="confirm_dialog_accept">Продолжить</string>
-    <string name="email_label">Введите email</string>
-    <string name="password_label">Введите пароль</string>
-    <string name="first_name_label">Введите имя</string>
-    <string name="last_name_label">Введите фамилию</string>
-    <string name="log_in">Авторизоваться</string>
-    <string name="register">Зарегистрироваться</string>
-    <string name="register_action">Ещё нет профиля?</string>
-    <string name="log_in_action">Уже есть профиль?</string>
     <string name="error__invalid_email">Некорректный email!</string>
     <string name="error__password_contains_space">В пароле не должно быть пробелов!</string>
     <string name="error__password_need_digit">Нужна хотя бы одна цифра!</string>
@@ -44,13 +13,77 @@
     <string name="error__email_already_exists">Данный email уже используется!</string>
     <string name="error__incorrect_password">Некорректный пароль!</string>
     <string name="error__invalid_user">Не удалось загрузить профиль</string>
-    <string name="clear_session">Выйти из профиля</string>
+
+    <string name="title__auth_screen">Авторизация</string>
+    <string name="title__home_screen">Главная</string>
+    <string name="title__lists_screen">Списки</string>
+    <string name="title__new_list_screen">Новый список покупок</string>
+    <string name="title__create_edit_item_screen">Изменение пункта</string>
+    <string name="title__list_details_screen">Список покупок</string>
+    <string name="title__confirm_dialog">Подтверждение действия</string>
+    <string name="title__share_list">Поделиться списком покупок</string>
+
+    <string name="action__clear_session">Выйти из профиля</string>
+    <string name="action__create_new_list">Создать новый список</string>
+    <string name="action__add_item">Добавить пункт</string>
+    <string name="action__submit_list">Сохранить</string>
+    <string name="action__submit_item">Сохранить</string>
+    <string name="action__confirm_dialog_dismiss">Отмена</string>
+    <string name="action__confirm_dialog_accept">Продолжить</string>
+    <string name="action__sign_in">Авторизоваться</string>
+    <string name="action__sign_up">Зарегистрироваться</string>
+    <string name="action__copy_list_id">Поделиться номером</string>
+    <string name="action__go_home">На главную</string>
+    <string name="action__show_changed_list">Показать</string>
+    <string name="action__search_shopping_list">Открыть список покупок</string>
+
+    <string name="label__shopping_list_id">Введите номер списка покупок</string>
+    <string name="label__email">Введите email</string>
+    <string name="label__password">Введите пароль</string>
+    <string name="label__first_name">Введите имя</string>
+    <string name="label__last_name">Введите фамилию</string>
+    <string name="label__item_name">Введите описание</string>
+    <string name="label__item_amount">Введите количество штук</string>
+
+    <string name="case__hours_first">%d час</string>
+    <string name="case__hours_second">%d часа</string>
+    <string name="case__hours_third">%d часов</string>
+    <string name="case__january">янв</string>
+    <string name="case__february">фев</string>
+    <string name="case__march">мар</string>
+    <string name="case__april">апр</string>
+    <string name="case__may">мая</string>
+    <string name="case__june">июн</string>
+    <string name="case__july">июл</string>
+    <string name="case__august">авг</string>
+    <string name="case__september">сен</string>
+    <string name="case__october">окт</string>
+    <string name="case__november">ноя</string>
+    <string name="case__december">дек</string>
+
+    <string name="format__time">%s в %s:%s</string>
+    <string name="format__date">%d %s %d</string>
+
+    <string name="toast__list_id_copied">Номер созданного списка покупок скопирован!</string>
+    <string name="toast__cannot_save_empty_list">Нельзя сохранить пустой список!</string>
+    <string name="toast__query_list_id_is_empty">Вы не ввели номер списка!</string>
+    <string name="toast__list_changed">Ваш список выполнили!</string>
+
+    <string name="other_action">Или</string>
+    <string name="empty_list">
+        Список покупок пуст!\n
+        Нажмите на +, чтобы добавить новый пункт
+    </string>
+    <string name="null_list">
+        Кажется, списка покупок с данным номером не существует…
+    </string>
+    <string name="confirm_dialog_message">
+        После выполнения списка покупок он больше не будет доступен. Продолжить?
+    </string>
+    <string name="sign_up_action">Ещё нет профиля?</string>
+    <string name="sign_in_action">Уже есть профиль?</string>
     <string name="list_created">Список покупок успешно создан!</string>
-    <string name="copy_list_id_action">Поделиться номером</string>
-    <string name="share_list_title">Поделиться списком покупок</string>
-    <string name="go_home_action">На главную</string>
     <string name="list_sent_from">Отправлено от:</string>
-    <string name="query_list_id_is_empty_message">Вы не ввели номер списка!</string>
     <string name="active_lists_section">Активные списки покупок</string>
     <string name="done_lists_section">Завершенные списки покупок</string>
     <string name="active_list">Активный список</string>
@@ -58,23 +91,5 @@
     <string name="list_items">Пунктов: </string>
     <string name="list_done_by">Выполнил: </string>
     <string name="list_done_at">Выполнен </string>
-    <string name="hours_first_case">%d час</string>
-    <string name="hours_second_case">%d часа</string>
-    <string name="hours_third_case">%d часов</string>
-    <string name="time_format">%s в %s:%s</string>
-    <string name="date_format">%d %s %d</string>
-    <string name="january_case">янв</string>
-    <string name="february_case">фев</string>
-    <string name="march_case">мар</string>
-    <string name="april_case">апр</string>
-    <string name="may_case">мая</string>
-    <string name="june_case">июн</string>
-    <string name="july_case">июл</string>
-    <string name="august_case">авг</string>
-    <string name="september_case">сен</string>
-    <string name="october_case">окт</string>
-    <string name="november_case">ноя</string>
-    <string name="december_case">дек</string>
-    <string name="lists_screen_title">Списки</string>
     <string name="empty_lists_section">Здесь ничего нет!</string>
 </resources>

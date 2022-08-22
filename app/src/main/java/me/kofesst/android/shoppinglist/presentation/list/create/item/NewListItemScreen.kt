@@ -19,7 +19,8 @@ import me.kofesst.android.shoppinglist.presentation.list.create.NewListViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.UiText
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.TextFields
 
@@ -30,7 +31,7 @@ class NewListItemScreen(
     topBarSettings = TopBarSettings(
         visible = true,
         hasBackButton = true,
-        title = createEditItemScreenTitle
+        title = AppText.Title.createEditItemScreenTitle
     ),
     args = listOf(
         navArgument(
@@ -146,9 +147,9 @@ class NewListItemScreen(
         TextFields.OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = itemNameLabel.asString(),
+            label = AppText.Label.itemNameLabel(),
             modifier = modifier
         )
     }
@@ -163,9 +164,9 @@ class NewListItemScreen(
         TextFields.OutlinedNumericTextField(
             value = amount,
             onValueChange = onAmountChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = itemAmountLabel.asString(),
+            label = AppText.Label.itemAmountLabel(),
             modifier = modifier
         )
     }
@@ -176,7 +177,7 @@ class NewListItemScreen(
         modifier: Modifier = Modifier
     ) {
         Buttons.Button(
-            text = submitItemText.asString(),
+            text = AppText.Action.submitItemAction(),
             onClick = onClick,
             modifier = modifier
         )

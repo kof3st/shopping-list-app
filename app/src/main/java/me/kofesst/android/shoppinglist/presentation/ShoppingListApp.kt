@@ -7,19 +7,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
+import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.route
+import me.kofesst.android.shoppinglist.presentation.screen.withArgs
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.activity
 
 val LocalAppState = compositionLocalOf<AppState> {
     error("App state didn't initialize")
@@ -35,6 +38,9 @@ fun ShoppingListApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    DatabaseNotificationsHandle(
+        appState = appState
+    )
     Scaffold(
         scaffoldState = appState.scaffoldState,
         topBar = {
@@ -55,6 +61,39 @@ fun ShoppingListApp() {
             navController = navController,
             padding = it
         )
+    }
+}
+
+@Composable
+fun DatabaseNotificationsHandle(
+    appState: AppState
+) {
+    val context = LocalContext.current
+    val mainViewModel = hiltViewModel<MainViewModel>(
+        viewModelStoreOwner = context.activity!!
+    )
+    val authState by mainViewModel.authState
+    LaunchedEffect(authState) {
+        when (authState) {
+            AuthState.LoggedOut -> {
+                mainViewModel.unsubscribeFromDatabaseChanges()
+            }
+            AuthState.LoggedIn -> {
+                mainViewModel.subscribeToDatabaseChanges { changedListId ->
+                    appState.showSnackbar(
+                        message = AppText.Toast.listChangedToast(context = context),
+                        action = AppText.Action.showChangedListAction(context = context),
+                        onActionPerform = {
+                            appState.navController.navigate(
+                                route = Screen.ListDetails.withArgs(
+                                    ScreenConstants.ListDetails.LIST_ID_ARG_NAME to changedListId
+                                )
+                            )
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -94,7 +133,7 @@ private fun TopBar(
         TopAppBar(
             title = {
                 Text(
-                    text = state.title.asString(),
+                    text = state.title(),
                     style = MaterialTheme.typography.h6
                 )
             },
@@ -104,7 +143,7 @@ private fun TopBar(
                     IconButton(onClick = action) {
                         Icon(
                             imageVector = it.icon,
-                            contentDescription = it.description.asString()
+                            contentDescription = it.description()
                         )
                     }
                 }
@@ -147,12 +186,12 @@ private fun BottomBar(
                     icon = {
                         Icon(
                             imageVector = screen.bottomBarSettings.icon,
-                            contentDescription = screen.bottomBarSettings.title.asString()
+                            contentDescription = screen.bottomBarSettings.title()
                         )
                     },
                     label = {
                         Text(
-                            text = screen.bottomBarSettings.title.asString(),
+                            text = screen.bottomBarSettings.title(),
                             style = MaterialTheme.typography.body2
                         )
                     },

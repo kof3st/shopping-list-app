@@ -20,7 +20,7 @@ fun <T : Any> LoadingStateHandler(
     },
     errorPanel: @Composable BoxScope.(UiText) -> Unit = { errorMessage ->
         ErrorPanel(
-            text = errorMessage.asString()
+            text = errorMessage()
         )
     }
 ) {
