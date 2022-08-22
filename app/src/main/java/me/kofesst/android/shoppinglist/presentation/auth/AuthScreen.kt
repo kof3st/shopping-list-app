@@ -20,7 +20,10 @@ import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.UiText
+import me.kofesst.android.shoppinglist.presentation.utils.activity
+import me.kofesst.android.shoppinglist.presentation.utils.errorMessage
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.LoadingHandler
 import me.kofesst.android.shoppinglist.ui.components.TextFields
@@ -79,9 +82,7 @@ class AuthScreen(
                 },
                 onFailed = {
                     appState.showSnackbar(
-                        message = it.errorMessage.asString(
-                            context = context
-                        )
+                        message = it.errorMessage(context = context)
                     )
                 }
             )
@@ -172,9 +173,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = email,
             onValueChange = onEmailChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = emailLabel.asString(),
+            label = AppText.Label.emailLabel(),
             modifier = modifier
         )
     }
@@ -189,9 +190,9 @@ class AuthScreen(
         TextFields.OutlinedPasswordTextField(
             value = password,
             onValueChange = onPasswordChange,
-            errorMessage = errorMessage?.asString(),
+            errorMessage = errorMessage?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = passwordLabel.asString(),
+            label = AppText.Label.passwordLabel(),
             modifier = modifier
         )
     }
@@ -230,9 +231,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = firstName,
             onValueChange = onFirstNameChange,
-            errorMessage = firstNameError?.asString(),
+            errorMessage = firstNameError?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = firstNameLabel.asString(),
+            label = AppText.Label.firstNameLabel(),
             modifier = modifier
         )
     }
@@ -247,9 +248,9 @@ class AuthScreen(
         TextFields.OutlinedTextField(
             value = lastName,
             onValueChange = onLastNameChange,
-            errorMessage = lastNameError?.asString(),
+            errorMessage = lastNameError?.invoke(),
             textStyle = MaterialTheme.typography.body1,
-            label = lastNameLabel.asString(),
+            label = AppText.Label.lastNameLabel(),
             modifier = modifier
         )
     }
@@ -280,14 +281,14 @@ class AuthScreen(
         modifier: Modifier = Modifier
     ) {
         Buttons.Button(
-            text = (when (screenState) {
+            text = when (screenState) {
                 is AuthScreenState.LogIn -> {
-                    logInText
+                    AppText.signInActionText()
                 }
                 is AuthScreenState.Register -> {
-                    registerText
+                    AppText.signUpActionText()
                 }
-            }).asString(),
+            },
             onClick = onSubmit,
             modifier = modifier
         )
@@ -300,14 +301,14 @@ class AuthScreen(
         modifier: Modifier = Modifier
     ) {
         Buttons.TextButton(
-            text = (when (screenState) {
+            text = when (screenState) {
                 is AuthScreenState.LogIn -> {
-                    registerActionText
+                    AppText.Action.signInAction()
                 }
                 is AuthScreenState.Register -> {
-                    logInActionText
+                    AppText.Action.signUpAction()
                 }
-            }).asString(),
+            },
             modifier = modifier,
             onClick = onScreenStateToggle
         )

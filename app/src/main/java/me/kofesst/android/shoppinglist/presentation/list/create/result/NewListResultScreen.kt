@@ -22,10 +22,7 @@ import androidx.navigation.navArgument
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
-import me.kofesst.android.shoppinglist.presentation.utils.copyListIdActionText
-import me.kofesst.android.shoppinglist.presentation.utils.goHomeActionText
-import me.kofesst.android.shoppinglist.presentation.utils.listCreatedText
-import me.kofesst.android.shoppinglist.presentation.utils.shareListTitle
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 
 class NewListResultScreen(
@@ -57,7 +54,7 @@ class NewListResultScreen(
             NewListResultContent(
                 onShareListIdClick = {
                     val intent = getShareIntent(
-                        title = shareListTitle.asString(context = context),
+                        title = AppText.Title.shareListTitle(context = context),
                         sharing = listId
                     )
                     context.startActivity(intent)
@@ -100,7 +97,7 @@ class NewListResultScreen(
                 modifier = Modifier.size(iconSize)
             )
             Text(
-                text = listCreatedText.asString(),
+                text = AppText.listCreatedText(),
                 style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -125,12 +122,12 @@ class NewListResultScreen(
             modifier = modifier
         ) {
             Buttons.TextButton(
-                text = copyListIdActionText.asString(),
+                text = AppText.Action.copyListIdAction(),
                 onClick = onShareListIdClick,
                 modifier = Modifier.fillMaxWidth()
             )
             Buttons.TextButton(
-                text = goHomeActionText.asString(),
+                text = AppText.Action.goHomeAction(),
                 onClick = onGoHomeClick,
                 modifier = Modifier.fillMaxWidth()
             )
