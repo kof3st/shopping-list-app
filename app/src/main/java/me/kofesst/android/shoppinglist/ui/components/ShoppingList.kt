@@ -5,7 +5,7 @@ package me.kofesst.android.shoppinglist.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.presentation.utils.formatDate
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListItem(
     list: ShoppingList,
@@ -31,7 +31,9 @@ fun ShoppingListItem(
 ) {
     Card(
         onClick = onClick,
-        elevation = elevation,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = elevation
+        ),
         modifier = modifier
     ) {
         Column(
@@ -47,7 +49,7 @@ fun ShoppingListItem(
                 } else {
                     AppText.activeListText()
                 },
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -62,7 +64,7 @@ fun ShoppingListItem(
                         append("${list.items.size} шт.")
                     }
                 },
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.bodyMedium
             )
             if (list.done) {
                 Text(
@@ -77,7 +79,7 @@ fun ShoppingListItem(
                             append(list.doneBy)
                         }
                     },
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = buildAnnotatedString {
@@ -95,7 +97,7 @@ fun ShoppingListItem(
                             )
                         }
                     },
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
@@ -212,7 +214,7 @@ private fun EditingShoppingItem(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShoppingItem(
     item: ShoppingItem,
@@ -246,12 +248,12 @@ private fun ShoppingItemContent(
     ) {
         Text(
             text = name,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = "$amount шт.",
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Light
         )
     }

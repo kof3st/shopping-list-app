@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +28,7 @@ val LocalAppState = compositionLocalOf<AppState> {
     error("App state didn't initialize")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListApp() {
     val appState = LocalAppState.current
@@ -42,7 +43,6 @@ fun ShoppingListApp() {
         appState = appState
     )
     Scaffold(
-        scaffoldState = appState.scaffoldState,
         topBar = {
             TopBar(
                 state = topBarState,
@@ -54,6 +54,11 @@ fun ShoppingListApp() {
                 state = bottomBarState,
                 currentScreenRoute = currentRoute,
                 navController = navController
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = appState.snackbarHostState
             )
         }
     ) {
@@ -124,17 +129,18 @@ private fun ScreensNavHost(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
     state: TopBarState,
     navController: NavController
 ) {
     if (state.visible) {
-        TopAppBar(
+        SmallTopAppBar(
             title = {
                 Text(
                     text = state.title(),
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.headlineSmall
                 )
             },
             actions = {
@@ -148,8 +154,8 @@ private fun TopBar(
                     }
                 }
             },
-            navigationIcon = if (state.hasBackButton) {
-                {
+            navigationIcon = {
+                if (state.hasBackButton) {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Outlined.ArrowBack,
@@ -157,8 +163,6 @@ private fun TopBar(
                         )
                     }
                 }
-            } else {
-                null
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -176,12 +180,12 @@ private fun BottomBar(
     }
     if (state.visible) {
         BottomAppBar(
-            elevation = 5.dp,
+            tonalElevation = 5.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             bottomBarScreens.forEach { screen ->
                 val isActive = screen.route == currentScreenRoute
-                BottomNavigationItem(
+                NavigationBarItem(
                     selected = isActive,
                     icon = {
                         Icon(
@@ -192,7 +196,7 @@ private fun BottomBar(
                     label = {
                         Text(
                             text = screen.bottomBarSettings.title(),
-                            style = MaterialTheme.typography.body2
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     onClick = {

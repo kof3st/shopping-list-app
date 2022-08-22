@@ -1,9 +1,9 @@
 package me.kofesst.android.shoppinglist.presentation.list.complete
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -132,7 +132,9 @@ class ListDetailsScreen(
         modifier: Modifier = Modifier
     ) {
         Card(
-            elevation = 8.dp,
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp
+            ),
             modifier = modifier
         ) {
             Column(
@@ -142,13 +144,13 @@ class ListDetailsScreen(
             ) {
                 Text(
                     text = AppText.listSentFromText(),
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.ExtraLight,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = author,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
@@ -184,37 +186,32 @@ class ListDetailsScreen(
         onAccept: () -> Unit
     ) {
         if (state) {
-            Surface(elevation = 7.dp) {
+            Surface(tonalElevation = 7.dp) {
                 AlertDialog(
                     onDismissRequest = onDismiss,
                     title = {
                         Text(
                             text = AppText.Title.confirmDialogTitle(),
-                            style = MaterialTheme.typography.h6
+                            style = MaterialTheme.typography.headlineSmall
                         )
                     },
                     text = {
                         Text(
                             text = AppText.confirmDialogMessageText(),
-                            style = MaterialTheme.typography.body1
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     },
-                    buttons = {
-                        Row(
-                            modifier = Modifier.padding(8.dp),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Buttons.TextButton(
-                                text = AppText.Action.confirmDialogDismissAction(),
-                                modifier = Modifier.weight(1.0f),
-                                onClick = onDismiss
-                            )
-                            Buttons.TextButton(
-                                text = AppText.Action.confirmDialogAcceptAction(),
-                                modifier = Modifier.weight(1.0f),
-                                onClick = onAccept
-                            )
-                        }
+                    confirmButton = {
+                        Buttons.TextButton(
+                            text = AppText.Action.confirmDialogDismissAction(),
+                            onClick = onDismiss
+                        )
+                    },
+                    dismissButton = {
+                        Buttons.TextButton(
+                            text = AppText.Action.confirmDialogAcceptAction(),
+                            onClick = onAccept
+                        )
                     }
                 )
             }

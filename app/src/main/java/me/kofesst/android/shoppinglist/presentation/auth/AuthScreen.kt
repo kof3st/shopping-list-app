@@ -2,8 +2,8 @@ package me.kofesst.android.shoppinglist.presentation.auth
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -172,8 +172,8 @@ class AuthScreen(
         ) {
             Text(
                 text = AppText.Title.authScreenTitle(),
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.primary
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(
                 modifier = Modifier.height(headerPadding)
@@ -237,7 +237,7 @@ class AuthScreen(
             value = email,
             onValueChange = onEmailChange,
             errorMessage = errorMessage?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.emailLabel(),
             modifier = modifier
         )
@@ -254,7 +254,7 @@ class AuthScreen(
             value = password,
             onValueChange = onPasswordChange,
             errorMessage = errorMessage?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.passwordLabel(),
             modifier = modifier
         )
@@ -295,7 +295,7 @@ class AuthScreen(
             value = firstName,
             onValueChange = onFirstNameChange,
             errorMessage = firstNameError?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.firstNameLabel(),
             modifier = modifier
         )
@@ -312,7 +312,7 @@ class AuthScreen(
             value = lastName,
             onValueChange = onLastNameChange,
             errorMessage = lastNameError?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.lastNameLabel(),
             modifier = modifier
         )
@@ -358,7 +358,7 @@ class AuthScreen(
                         AppText.signUpActionText()
                     }
                 },
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.bodyMedium
             )
             Buttons.TextButton(
                 text = when (screenState) {

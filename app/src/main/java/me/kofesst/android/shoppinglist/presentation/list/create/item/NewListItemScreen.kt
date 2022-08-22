@@ -1,7 +1,7 @@
 package me.kofesst.android.shoppinglist.presentation.list.create.item
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -148,7 +148,7 @@ class NewListItemScreen(
             value = name,
             onValueChange = onNameChange,
             errorMessage = errorMessage?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.itemNameLabel(),
             modifier = modifier
         )
@@ -165,7 +165,7 @@ class NewListItemScreen(
             value = amount,
             onValueChange = onAmountChange,
             errorMessage = errorMessage?.invoke(),
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodyLarge,
             label = AppText.Label.itemAmountLabel(),
             modifier = modifier
         )

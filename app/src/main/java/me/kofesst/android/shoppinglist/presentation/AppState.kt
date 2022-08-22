@@ -1,9 +1,8 @@
 package me.kofesst.android.shoppinglist.presentation
 
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarResult
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -16,7 +15,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.UiText
 @Stable
 class AppState(
     val coroutineState: CoroutineScope,
-    val scaffoldState: ScaffoldState,
+    val snackbarHostState: SnackbarHostState,
     val navController: NavHostController,
     val topBarState: TopBarState,
     val bottomBarState: BottomBarState
@@ -29,7 +28,7 @@ class AppState(
         onActionPerform: () -> Unit = {}
     ) {
         coroutineState.launch {
-            val result = scaffoldState.snackbarHostState.showSnackbar(
+            val result = snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = action,
                 duration = duration
@@ -46,13 +45,13 @@ class AppState(
 @Composable
 fun rememberAppState(
     coroutineState: CoroutineScope = rememberCoroutineScope(),
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     navController: NavHostController = rememberNavController(),
     topBarState: TopBarState = TopBarState(),
     bottomBarState: BottomBarState = BottomBarState()
 ) = AppState(
     coroutineState = coroutineState,
-    scaffoldState = scaffoldState,
+    snackbarHostState = snackbarHostState,
     navController = navController,
     topBarState = topBarState,
     bottomBarState = bottomBarState
