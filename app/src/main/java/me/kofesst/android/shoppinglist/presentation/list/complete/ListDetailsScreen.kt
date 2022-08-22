@@ -20,7 +20,8 @@ import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
+import me.kofesst.android.shoppinglist.presentation.utils.UiText
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.EditingShoppingListColumn
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
@@ -32,7 +33,7 @@ class ListDetailsScreen(
     topBarSettings = TopBarSettings(
         visible = true,
         hasBackButton = true,
-        title = listDetailsScreenTitle
+        title = AppText.Title.listDetailsScreenTitle
     ),
     args = listOf(
         navArgument(
@@ -140,7 +141,7 @@ class ListDetailsScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = listSentFromText.asString(),
+                    text = AppText.listSentFromText(),
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.ExtraLight,
                     textAlign = TextAlign.Center
@@ -172,7 +173,7 @@ class ListDetailsScreen(
     }
 
     private fun getDetailsStateErrorMessage(exception: Exception) = when (exception) {
-        is NullPointerException -> nullListMessage
+        is NullPointerException -> AppText.nullListText
         else -> UiText.Static(exception.toString())
     }
 
@@ -188,13 +189,13 @@ class ListDetailsScreen(
                     onDismissRequest = onDismiss,
                     title = {
                         Text(
-                            text = confirmDialogTitle.asString(),
+                            text = AppText.Title.confirmDialogTitle(),
                             style = MaterialTheme.typography.h6
                         )
                     },
                     text = {
                         Text(
-                            text = confirmDialogMessage.asString(),
+                            text = AppText.confirmDialogMessageText(),
                             style = MaterialTheme.typography.body1
                         )
                     },
@@ -204,12 +205,12 @@ class ListDetailsScreen(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Buttons.TextButton(
-                                text = confirmDialogDismissText.asString(),
+                                text = AppText.Action.confirmDialogDismissAction(),
                                 modifier = Modifier.weight(1.0f),
                                 onClick = onDismiss
                             )
                             Buttons.TextButton(
-                                text = confirmDialogAcceptText.asString(),
+                                text = AppText.Action.confirmDialogAcceptAction(),
                                 modifier = Modifier.weight(1.0f),
                                 onClick = onAccept
                             )

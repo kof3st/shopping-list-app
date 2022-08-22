@@ -21,9 +21,8 @@ import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.route
 import me.kofesst.android.shoppinglist.presentation.screen.withArgs
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.presentation.utils.activity
-import me.kofesst.android.shoppinglist.presentation.utils.listChangedMessage
-import me.kofesst.android.shoppinglist.presentation.utils.showChangedListText
 
 val LocalAppState = compositionLocalOf<AppState> {
     error("App state didn't initialize")
@@ -82,8 +81,8 @@ fun DatabaseNotificationsHandle(
             AuthState.LoggedIn -> {
                 mainViewModel.subscribeToDatabaseChanges { changedListId ->
                     appState.showSnackbar(
-                        listChangedMessage.asString(context = context),
-                        action = showChangedListText.asString(context = context),
+                        message = AppText.Toast.listChangedToast(context = context),
+                        action = AppText.Action.showChangedListAction(context = context),
                         onActionPerform = {
                             appState.navController.navigate(
                                 route = Screen.ListDetails.withArgs(
@@ -134,7 +133,7 @@ private fun TopBar(
         TopAppBar(
             title = {
                 Text(
-                    text = state.title.asString(),
+                    text = state.title(),
                     style = MaterialTheme.typography.h6
                 )
             },
@@ -144,7 +143,7 @@ private fun TopBar(
                     IconButton(onClick = action) {
                         Icon(
                             imageVector = it.icon,
-                            contentDescription = it.description.asString()
+                            contentDescription = it.description()
                         )
                     }
                 }
@@ -187,12 +186,12 @@ private fun BottomBar(
                     icon = {
                         Icon(
                             imageVector = screen.bottomBarSettings.icon,
-                            contentDescription = screen.bottomBarSettings.title.asString()
+                            contentDescription = screen.bottomBarSettings.title()
                         )
                     },
                     label = {
                         Text(
-                            text = screen.bottomBarSettings.title.asString(),
+                            text = screen.bottomBarSettings.title(),
                             style = MaterialTheme.typography.body2
                         )
                     },

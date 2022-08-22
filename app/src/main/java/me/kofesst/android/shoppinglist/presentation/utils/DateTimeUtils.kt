@@ -7,18 +7,18 @@ import java.util.*
 fun Long.formatHours(): String {
     val suffix: UiText = when {
         this % 100 in 10..19 -> {
-            hoursThirdCase // 15 часов
+            AppText.Case.hoursThirdCase // 15 часов
         }
         else -> {
             when (this % 10) {
-                1L -> hoursFirstCase
-                in 2..4 -> hoursSecondCase // 22 часа
-                else -> hoursThirdCase // 25 часов
+                1L -> AppText.Case.hoursFirstCase
+                in 2..4 -> AppText.Case.hoursSecondCase // 22 часа
+                else -> AppText.Case.hoursThirdCase // 25 часов
             }
         }
     }
 
-    return suffix.asString(this)
+    return suffix(this)
 }
 
 @Composable
@@ -30,11 +30,11 @@ fun Long.formatDate(showTime: Boolean = false): String {
     val monthName = calendar.getMonth()
     val year = calendar.get(Calendar.YEAR)
 
-    var formatted = dateFormat.asString(dayOfMonth, monthName, year)
+    var formatted = AppText.Format.dateFormat(dayOfMonth, monthName, year)
     if (showTime) {
         val hours = calendar.get(Calendar.HOUR_OF_DAY).toString()
         val minutes = calendar.get(Calendar.MINUTE).toString()
-        formatted = timeFormat.asString(
+        formatted = AppText.Format.timeFormat(
             formatted,
             hours.padStart(2, '0'),
             minutes.padStart(2, '0')
@@ -45,21 +45,21 @@ fun Long.formatDate(showTime: Boolean = false): String {
 }
 
 private val monthCases = listOf(
-    januaryCase,
-    februaryCase,
-    marchCase,
-    aprilCase,
-    mayCase,
-    juneCase,
-    julyCase,
-    augustCase,
-    septemberCase,
-    octoberCase,
-    novemberCase,
-    decemberCase
+    AppText.Case.januaryCase,
+    AppText.Case.februaryCase,
+    AppText.Case.marchCase,
+    AppText.Case.aprilCase,
+    AppText.Case.mayCase,
+    AppText.Case.juneCase,
+    AppText.Case.julyCase,
+    AppText.Case.augustCase,
+    AppText.Case.septemberCase,
+    AppText.Case.octoberCase,
+    AppText.Case.novemberCase,
+    AppText.Case.decemberCase
 )
 
 @Composable
 fun Calendar.getMonth(): String {
-    return monthCases[this.get(Calendar.MONTH)].asString()
+    return monthCases[this.get(Calendar.MONTH)]()
 }

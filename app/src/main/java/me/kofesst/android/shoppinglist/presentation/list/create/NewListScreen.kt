@@ -28,7 +28,7 @@ import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.screen.ScreenConstants
 import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
 import me.kofesst.android.shoppinglist.presentation.screen.withArgs
-import me.kofesst.android.shoppinglist.presentation.utils.*
+import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.ui.components.LoadingHandler
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
@@ -39,7 +39,7 @@ class NewListScreen(
     topBarSettings = TopBarSettings(
         visible = true,
         hasBackButton = true,
-        title = newListScreenTitle
+        title = AppText.Title.newListScreenTitle
     )
 ) {
     override val viewModelProducer:
@@ -73,9 +73,7 @@ class NewListScreen(
                 onSubmitListClick = {
                     if (items.isEmpty()) {
                         appState.showSnackbar(
-                            message = cannotSaveEmptyListMessage.asString(
-                                context = context
-                            )
+                            message = AppText.Toast.cannotSaveEmptyListToast(context = context)
                         )
                     } else {
                         viewModel.saveList { listId ->
@@ -83,9 +81,7 @@ class NewListScreen(
                                 annotatedString = AnnotatedString(listId)
                             )
                             appState.showSnackbar(
-                                message = listIdCopiedMessage.asString(
-                                    context = context
-                                )
+                                message = AppText.Toast.listIdCopiedToast(context = context)
                             )
                             appState.navController.navigate(
                                 route = NewListResult.withArgs(
@@ -145,7 +141,7 @@ class NewListScreen(
                 modifier = Modifier.size(72.dp)
             )
             Text(
-                text = emptyListMessage.asString(),
+                text = AppText.emptyListText(),
                 style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -170,7 +166,7 @@ class NewListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
-                    contentDescription = addItemText.asString()
+                    contentDescription = AppText.Action.addNewListItemAction()
                 )
             }
             FloatingActionButton(
@@ -178,7 +174,7 @@ class NewListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Save,
-                    contentDescription = submitListText.asString()
+                    contentDescription = AppText.Action.submitListAction()
                 )
             }
         }
