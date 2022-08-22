@@ -79,4 +79,6 @@
     <string name="december_case">dec</string>
     <string name="lists_screen_title">Lists</string>
     <string name="empty_lists_section">There\'s nothing here!</string>
+    <string name="list_changed">Your list is done!</string>
+    <string name="show_changed_list">Show</string>
 </resources>

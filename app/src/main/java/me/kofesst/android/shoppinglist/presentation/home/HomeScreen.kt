@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
+import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.*
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
@@ -37,9 +38,14 @@ class HomeScreen(
                 description = clearSessionText,
                 onClick = {
                     val viewModel = hiltViewModel<HomeViewModel>()
+                    val context = LocalContext.current
+                    val mainViewModel = hiltViewModel<MainViewModel>(
+                        viewModelStoreOwner = context.activity!!
+                    )
                     val appState = LocalAppState.current
-                    {
+                    return@Action {
                         viewModel.clearSession {
+                            mainViewModel.onSignOut()
                             appState.navController.navigate(
                                 route = Auth.routeName
                             ) {

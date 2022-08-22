@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.Flow
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
+import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
 import me.kofesst.android.shoppinglist.presentation.utils.*
 import me.kofesst.android.shoppinglist.ui.components.Buttons
@@ -60,10 +61,14 @@ class AuthScreen(
                 viewModel = viewModel
             )
             val context = LocalContext.current
+            val mainViewModel = hiltViewModel<MainViewModel>(
+                viewModelStoreOwner = context.activity!!
+            )
             val appState = LocalAppState.current
             FormResultListener(
                 result = viewModel.formResult,
                 onSuccess = {
+                    mainViewModel.onSignIn()
                     appState.navController.navigate(
                         route = Home.routeName
                     ) {

@@ -77,4 +77,6 @@
     <string name="december_case">дек</string>
     <string name="lists_screen_title">Списки</string>
     <string name="empty_lists_section">Здесь ничего нет!</string>
+    <string name="list_changed">Ваш список выполнили!</string>
+    <string name="show_changed_list">Показать</string>
 </resources>
