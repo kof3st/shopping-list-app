@@ -14,6 +14,7 @@
     <string name="error__incorrect_password">Некорректный пароль!</string>
     <string name="error__invalid_user">Не удалось загрузить профиль</string>
 
+    <string name="title__auth_screen">Авторизация</string>
     <string name="title__home_screen">Главная</string>
     <string name="title__lists_screen">Списки</string>
     <string name="title__new_list_screen">Новый список покупок</string>

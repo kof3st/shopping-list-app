@@ -14,6 +14,7 @@
     <string name="error__invalid_user">Cannot load profile</string>
     <string name="error__invalid_email">Invalid email!</string>
 
+    <string name="title__auth_screen">Authorization</string>
     <string name="title__home_screen">Home</string>
     <string name="title__new_list_screen">New shopping list</string>
     <string name="title__create_edit_item_screen">Edit item</string>

@@ -69,6 +69,7 @@ sealed class AppText {
         val invalidUserError = UiText.Resource(R.string.error__invalid_user)
     }
     object Title : AppText() {
+        val authScreenTitle = UiText.Resource(R.string.title__auth_screen)
         val homeScreenTitle = UiText.Resource(R.string.title__home_screen)
         val listsScreenTitle = UiText.Resource(R.string.title__lists_screen)
         val newListScreenTitle = UiText.Resource(R.string.title__new_list_screen)
