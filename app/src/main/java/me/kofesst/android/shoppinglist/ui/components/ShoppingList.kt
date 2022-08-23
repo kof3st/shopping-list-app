@@ -248,8 +248,8 @@ private fun ShoppingItemContent(
     ) {
         Text(
             text = name,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold
         )
         Text(
             text = "$amount шт.",

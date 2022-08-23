@@ -1,9 +1,6 @@
 package me.kofesst.android.shoppinglist.presentation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
@@ -44,10 +41,17 @@ fun ShoppingListApp() {
     )
     Scaffold(
         topBar = {
-            TopBar(
-                state = topBarState,
-                navController = navController
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TopBar(
+                    state = topBarState,
+                    navController = navController
+                )
+                Divider(
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+            }
         },
         bottomBar = {
             BottomBar(
