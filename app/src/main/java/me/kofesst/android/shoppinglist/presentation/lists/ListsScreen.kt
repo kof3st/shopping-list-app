@@ -1,21 +1,21 @@
 package me.kofesst.android.shoppinglist.presentation.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Checklist
 import androidx.compose.material.icons.outlined.Eco
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -94,12 +94,12 @@ class ListsScreen(
             verticalArrangement = Arrangement.spacedBy(contentSpacing),
             modifier = modifier
         ) {
-            stickyHeader {
-                DividerWithText(
-                    text = AppText.activeListsSectionText()
-                )
-            }
             if (activeLists.isNotEmpty()) {
+                stickyHeader {
+                    SectionHeader(
+                        text = AppText.activeListsSectionText()
+                    )
+                }
                 items(activeLists) { activeList ->
                     ShoppingListItem(
                         list = activeList,
@@ -107,17 +107,13 @@ class ListsScreen(
                         onClick = { onItemClick(activeList) }
                     )
                 }
-            } else {
-                item {
-                    EmptySectionPanel()
-                }
-            }
-            stickyHeader {
-                DividerWithText(
-                    text = AppText.doneListsSectionText()
-                )
             }
             if (doneLists.isNotEmpty()) {
+                stickyHeader {
+                    SectionHeader(
+                        text = AppText.doneListsSectionText()
+                    )
+                }
                 items(doneLists) { doneList ->
                     ShoppingListItem(
                         list = doneList,
@@ -125,16 +121,35 @@ class ListsScreen(
                         onClick = { onItemClick(doneList) }
                     )
                 }
-            } else {
+            }
+            if (activeLists.isEmpty() && doneLists.isEmpty()) {
                 item {
-                    EmptySectionPanel()
+                    EmptySectionsPanel()
                 }
             }
         }
     }
 
     @Composable
-    private fun EmptySectionPanel() {
+    private fun SectionHeader(
+        text: String,
+        textPadding: Dp = 10.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+        ) {
+            DividerWithText(
+                text = text,
+                textStyle = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(vertical = textPadding)
+            )
+        }
+    }
+
+    @Composable
+    private fun EmptySectionsPanel() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
@@ -150,8 +165,7 @@ class ListsScreen(
             )
             Text(
                 text = AppText.emptyListsSectionText(),
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
         }

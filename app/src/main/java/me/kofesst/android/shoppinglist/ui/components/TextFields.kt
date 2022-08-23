@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -34,7 +34,7 @@ class TextFields private constructor() {
             label: String = "",
             leadingIcon: Painter? = null,
             singleLine: Boolean = true,
-            textStyle: TextStyle = MaterialTheme.typography.body1
+            textStyle: TextStyle = MaterialTheme.typography.bodyLarge
         ) {
             var passwordVisible by remember {
                 mutableStateOf(false)
@@ -80,7 +80,7 @@ class TextFields private constructor() {
             trailingIcon: Painter? = null,
             onTrailingIconClick: () -> Unit = {},
             singleLine: Boolean = true,
-            textStyle: TextStyle = MaterialTheme.typography.body1
+            textStyle: TextStyle = MaterialTheme.typography.bodyLarge
         ) {
             OutlinedTextField(
                 value = value?.toString() ?: "",
@@ -106,7 +106,7 @@ class TextFields private constructor() {
             )
         }
 
-        @OptIn(ExperimentalComposeUiApi::class)
+        @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
         @Composable
         fun OutlinedTextField(
             modifier: Modifier = Modifier,
@@ -119,7 +119,7 @@ class TextFields private constructor() {
             trailingIcon: Painter? = null,
             onTrailingIconClick: () -> Unit = {},
             singleLine: Boolean = true,
-            textStyle: TextStyle = MaterialTheme.typography.body1,
+            textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
             keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
             visualTransformation: VisualTransformation = VisualTransformation.None
         ) {
@@ -133,7 +133,7 @@ class TextFields private constructor() {
                     label = {
                         Text(
                             text = label,
-                            style = MaterialTheme.typography.body2
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     leadingIcon = if (leadingIcon != null) {
@@ -184,8 +184,8 @@ class TextFields private constructor() {
             AnimatedVisibility(visible = message != null) {
                 Text(
                     text = message ?: "",
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Start,
                     modifier = modifier
                 )

@@ -1,10 +1,10 @@
 package me.kofesst.android.shoppinglist.presentation.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -142,7 +142,7 @@ class HomeScreen(
                 value = query,
                 onValueChange = { query = it },
                 label = AppText.Label.shoppingListIdLabel(),
-                textStyle = MaterialTheme.typography.body1,
+                textStyle = MaterialTheme.typography.bodyLarge,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )

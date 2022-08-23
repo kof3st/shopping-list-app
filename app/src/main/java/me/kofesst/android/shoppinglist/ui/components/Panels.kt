@@ -1,9 +1,9 @@
 package me.kofesst.android.shoppinglist.ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SearchOff
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +31,7 @@ fun ErrorPanel(
         )
         Text(
             text = text,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -45,7 +45,9 @@ fun LoadingPanel(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Card(
-            elevation = elevation,
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = elevation
+            ),
             modifier = Modifier.align(Alignment.Center)
         ) {
             CircularProgressIndicator(
