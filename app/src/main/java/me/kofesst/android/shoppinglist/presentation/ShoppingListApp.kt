@@ -6,6 +6,8 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,7 +64,12 @@ fun ShoppingListApp() {
         },
         snackbarHost = {
             SnackbarHost(
-                hostState = appState.snackbarHostState
+                hostState = appState.snackbarHostState,
+                snackbar = { data ->
+                    AppSnackbar(
+                        snackbarData = data
+                    )
+                }
             )
         }
     ) {
@@ -74,7 +81,7 @@ fun ShoppingListApp() {
 }
 
 @Composable
-fun DatabaseNotificationsHandle(
+private fun DatabaseNotificationsHandle(
     appState: AppState
 ) {
     val context = LocalContext.current
@@ -218,4 +225,25 @@ private fun BottomBar(
             }
         }
     }
+}
+
+@Composable
+private fun AppSnackbar(
+    snackbarData: SnackbarData,
+    modifier: Modifier = Modifier,
+    actionOnNewLine: Boolean = false,
+    shape: Shape = MaterialTheme.shapes.small,
+    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    actionColor: Color = MaterialTheme.colorScheme.primary
+) {
+    Snackbar(
+        snackbarData = snackbarData,
+        modifier = modifier,
+        actionOnNewLine = actionOnNewLine,
+        shape = shape,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        actionColor = actionColor
+    )
 }
