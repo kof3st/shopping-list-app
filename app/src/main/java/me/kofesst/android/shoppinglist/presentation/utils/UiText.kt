@@ -147,5 +147,6 @@ sealed class AppText {
         val signUpActionText = UiText.Resource(R.string.sign_up_action)
         val signInActionText = UiText.Resource(R.string.sign_in_action)
         val listCreatedText = UiText.Resource(R.string.list_created)
+        val checkingForSessionText = UiText.Resource(R.string.checking_for_session)
     }
 }

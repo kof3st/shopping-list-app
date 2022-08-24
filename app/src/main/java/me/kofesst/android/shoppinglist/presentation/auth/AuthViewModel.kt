@@ -1,5 +1,6 @@
 package me.kofesst.android.shoppinglist.presentation.auth
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,6 +25,9 @@ class AuthViewModel @Inject constructor(
     private val validationChannel = Channel<AuthResult>()
     val formResult = validationChannel.receiveAsFlow()
 
+    private val _sessionCheckState = mutableStateOf(true)
+    val sessionCheckState: State<Boolean> get() = _sessionCheckState
+
     fun tryRestoreSession() {
         var session: Pair<String, String>? = null
         runSuspend(
@@ -34,6 +38,8 @@ class AuthViewModel @Inject constructor(
                         password = this.second
                     )
                     onSubmit()
+                } ?: kotlin.run {
+                    _sessionCheckState.value = false
                 }
             }
         ) {

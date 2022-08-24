@@ -1,22 +1,34 @@
 package me.kofesst.android.shoppinglist.presentation.auth
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.flow.Flow
+import me.kofesst.android.shoppinglist.R
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.MainViewModel
@@ -87,7 +99,55 @@ class AuthScreen(
             LoadingHandler(
                 viewModel = viewModel
             )
+
+            val sessionCheckState by viewModel.sessionCheckState
+            AnimatedVisibility(
+                visible = sessionCheckState,
+                enter = EnterTransition.None,
+                exit = fadeOut(
+                    animationSpec = keyframes {
+                        this.durationMillis = 1000
+                    }
+                )
+            ) {
+                AuthSessionSplashScreen()
+            }
         }
+
+    @Composable
+    private fun AuthSessionSplashScreen(
+        lottieSize: Dp = 256.dp,
+        lottiePadding: Dp = 10.dp
+    ) {
+        val lottieComposition by rememberLottieComposition(
+            spec = LottieCompositionSpec.RawRes(R.raw.shopping_cart_lottie)
+        )
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize()
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(
+                    space = lottiePadding,
+                    alignment = Alignment.CenterVertically
+                ),
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                LottieAnimation(
+                    composition = lottieComposition,
+                    modifier = Modifier.size(lottieSize)
+                )
+                Text(
+                    text = AppText.checkingForSessionText(),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable

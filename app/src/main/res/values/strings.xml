@@ -92,4 +92,5 @@
     <string name="list_done_by">Выполнил: </string>
     <string name="list_done_at">Выполнен </string>
     <string name="empty_lists_section">Здесь ничего нет!</string>
+    <string name="checking_for_session">Проверка сессии…</string>
 </resources>
