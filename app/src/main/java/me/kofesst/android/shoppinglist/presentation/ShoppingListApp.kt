@@ -3,6 +3,7 @@ package me.kofesst.android.shoppinglist.presentation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -29,7 +30,9 @@ val LocalAppState = compositionLocalOf<AppState> {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingListApp() {
+fun ShoppingListApp(
+    viewModel: MainViewModel
+) {
     val appState = LocalAppState.current
     val navController = appState.navController
     val topBarState = remember { appState.topBarState }
@@ -48,7 +51,9 @@ fun ShoppingListApp() {
             ) {
                 TopBar(
                     state = topBarState,
-                    navController = navController
+                    navController = navController,
+                    viewModel = viewModel,
+                    currentScreenRoute = currentRoute
                 )
                 Divider(
                     modifier = Modifier.padding(horizontal = 10.dp)
@@ -144,9 +149,15 @@ private fun ScreensNavHost(
 @Composable
 private fun TopBar(
     state: TopBarState,
-    navController: NavController
+    navController: NavController,
+    viewModel: MainViewModel,
+    currentScreenRoute: String?
 ) {
     if (state.visible) {
+        val appState = LocalAppState.current
+        val bottomBarScreens = Screen.values.filter { screen ->
+            screen.bottomBarSettings.visible
+        }
         SmallTopAppBar(
             title = {
                 Text(
@@ -155,6 +166,29 @@ private fun TopBar(
                 )
             },
             actions = {
+                if (bottomBarScreens.any { it.routeName == currentScreenRoute }) {
+                    IconButton(
+                        onClick = {
+                            viewModel.clearSession {
+                                viewModel.onSignOut()
+                                appState.navController.navigate(
+                                    route = Screen.Auth.routeName
+                                ) {
+                                    if (currentScreenRoute != null) {
+                                        popUpTo(currentScreenRoute) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ExitToApp,
+                            contentDescription = AppText.Action.clearSessionAction()
+                        )
+                    }
+                }
                 state.actions.forEach {
                     val action = it.onClick()
                     IconButton(onClick = action) {
