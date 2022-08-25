@@ -5,7 +5,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,16 +16,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.flow.Flow
 import me.kofesst.android.shoppinglist.R
 import me.kofesst.android.shoppinglist.domain.utils.AuthResult
@@ -39,6 +33,7 @@ import me.kofesst.android.shoppinglist.presentation.utils.activity
 import me.kofesst.android.shoppinglist.presentation.utils.errorMessage
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.LoadingHandler
+import me.kofesst.android.shoppinglist.ui.components.LottieMessage
 import me.kofesst.android.shoppinglist.ui.components.TextFields
 
 @Suppress("OPT_IN_IS_NOT_ENABLED")
@@ -115,38 +110,12 @@ class AuthScreen(
         }
 
     @Composable
-    private fun AuthSessionSplashScreen(
-        lottieSize: Dp = 256.dp,
-        lottiePadding: Dp = 10.dp
-    ) {
-        val lottieComposition by rememberLottieComposition(
-            spec = LottieCompositionSpec.RawRes(R.raw.shopping_cart_lottie)
+    private fun AuthSessionSplashScreen() {
+        LottieMessage(
+            lottieRes = R.raw.shopping_cart_lottie,
+            message = AppText.checkingForSessionText(),
+            shouldFillBackground = true
         )
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(
-                    space = lottiePadding,
-                    alignment = Alignment.CenterVertically
-                ),
-                modifier = Modifier.align(Alignment.Center)
-            ) {
-                LottieAnimation(
-                    composition = lottieComposition,
-                    modifier = Modifier.size(lottieSize)
-                )
-                Text(
-                    text = AppText.checkingForSessionText(),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
