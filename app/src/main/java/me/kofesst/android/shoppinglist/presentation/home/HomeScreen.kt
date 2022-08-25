@@ -2,7 +2,6 @@ package me.kofesst.android.shoppinglist.presentation.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -17,10 +16,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
-import me.kofesst.android.shoppinglist.presentation.MainViewModel
 import me.kofesst.android.shoppinglist.presentation.screen.*
 import me.kofesst.android.shoppinglist.presentation.utils.AppText
-import me.kofesst.android.shoppinglist.presentation.utils.activity
 import me.kofesst.android.shoppinglist.ui.components.Buttons
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
 import me.kofesst.android.shoppinglist.ui.components.TextFields
@@ -32,33 +29,7 @@ class HomeScreen(
     routeName = routeName,
     topBarSettings = TopBarSettings(
         visible = true,
-        title = AppText.Title.homeScreenTitle,
-        actions = listOf(
-            TopBarSettings.Action(
-                icon = Icons.Outlined.ExitToApp,
-                description = AppText.Action.clearSessionAction,
-                onClick = {
-                    val viewModel = hiltViewModel<HomeViewModel>()
-                    val context = LocalContext.current
-                    val mainViewModel = hiltViewModel<MainViewModel>(
-                        viewModelStoreOwner = context.activity!!
-                    )
-                    val appState = LocalAppState.current
-                    return@Action {
-                        viewModel.clearSession {
-                            mainViewModel.onSignOut()
-                            appState.navController.navigate(
-                                route = Auth.routeName
-                            ) {
-                                popUpTo(routeName) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                    }
-                }
-            )
-        )
+        title = AppText.Title.homeScreenTitle
     ),
     bottomBarSettings = BottomBarSettings(
         visible = true,

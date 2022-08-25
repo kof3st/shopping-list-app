@@ -7,27 +7,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Checklist
-import androidx.compose.material.icons.outlined.Eco
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import me.kofesst.android.shoppinglist.R
 import me.kofesst.android.shoppinglist.domain.models.ShoppingList
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.*
 import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.ui.components.DividerWithText
 import me.kofesst.android.shoppinglist.ui.components.LoadingStateHandler
+import me.kofesst.android.shoppinglist.ui.components.LottieMessage
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListItem
 
 @Suppress("OPT_IN_IS_NOT_ENABLED")
@@ -72,6 +70,9 @@ class ListsScreen(
                             )
                         }
                     )
+                    if (userLists.isEmpty()) {
+                        EmptySectionsPanel()
+                    }
                 },
                 modifier = modifier.fillMaxWidth()
             )
@@ -122,11 +123,6 @@ class ListsScreen(
                     )
                 }
             }
-            if (activeLists.isEmpty() && doneLists.isEmpty()) {
-                item {
-                    EmptySectionsPanel()
-                }
-            }
         }
     }
 
@@ -150,24 +146,9 @@ class ListsScreen(
 
     @Composable
     private fun EmptySectionsPanel() {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                space = 10.dp,
-                alignment = Alignment.CenterVertically
-            ),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Eco,
-                contentDescription = null,
-                modifier = Modifier.size(72.dp)
-            )
-            Text(
-                text = AppText.emptyListsSectionText(),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center
-            )
-        }
+        LottieMessage(
+            lottieRes = R.raw.empty_cart_lottie,
+            message = AppText.emptyListsSectionText()
+        )
     }
 }

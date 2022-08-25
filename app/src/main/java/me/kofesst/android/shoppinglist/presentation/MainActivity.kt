@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModelOwner = compositionLocalOf<ViewModelStoreOwner> { this }
-                    hiltViewModel<MainViewModel>(
+                    val viewModel = hiltViewModel<MainViewModel>(
                         viewModelStoreOwner = viewModelOwner.current
                     )
                     val appState = rememberAppState()
@@ -34,7 +34,9 @@ class MainActivity : ComponentActivity() {
                         LocalAppState provides appState,
                         LocalViewModelStoreOwner provides viewModelOwner.current
                     ) {
-                        ShoppingListApp()
+                        ShoppingListApp(
+                            viewModel = viewModel
+                        )
                     }
                 }
             }

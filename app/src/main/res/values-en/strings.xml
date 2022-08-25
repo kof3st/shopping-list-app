@@ -92,4 +92,5 @@
     <string name="list_done_by">Done by: </string>
     <string name="list_done_at">Done at </string>
     <string name="empty_lists_section">There\'s nothing here!</string>
+    <string name="checking_for_session">Checking your session…</string>
 </resources>

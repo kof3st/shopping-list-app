@@ -3,25 +3,21 @@ package me.kofesst.android.shoppinglist.presentation.list.create
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import me.kofesst.android.shoppinglist.R
 import me.kofesst.android.shoppinglist.domain.models.ShoppingItem
 import me.kofesst.android.shoppinglist.presentation.LocalAppState
 import me.kofesst.android.shoppinglist.presentation.screen.Screen
@@ -30,6 +26,7 @@ import me.kofesst.android.shoppinglist.presentation.screen.TopBarSettings
 import me.kofesst.android.shoppinglist.presentation.screen.withArgs
 import me.kofesst.android.shoppinglist.presentation.utils.AppText
 import me.kofesst.android.shoppinglist.ui.components.LoadingHandler
+import me.kofesst.android.shoppinglist.ui.components.LottieMessage
 import me.kofesst.android.shoppinglist.ui.components.ShoppingListColumn
 
 class NewListScreen(
@@ -111,9 +108,7 @@ class NewListScreen(
         modifier: Modifier = Modifier
     ) {
         if (items.isEmpty()) {
-            EmptyListMessagePanel(
-                modifier = modifier
-            )
+            EmptyListMessagePanel()
         } else {
             ShoppingListColumn(
                 items = items,
@@ -124,29 +119,11 @@ class NewListScreen(
     }
 
     @Composable
-    private fun EmptyListMessagePanel(
-        modifier: Modifier = Modifier
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                space = 10.dp,
-                alignment = Alignment.CenterVertically
-            ),
-            modifier = modifier
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Folder,
-                contentDescription = null,
-                modifier = Modifier.size(72.dp)
-            )
-            Text(
-                text = AppText.emptyListText(),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        }
+    private fun EmptyListMessagePanel() {
+        LottieMessage(
+            lottieRes = R.raw.add_to_cart_lottie,
+            message = AppText.emptyListText()
+        )
     }
 
     @Composable
